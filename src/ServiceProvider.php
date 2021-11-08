@@ -2,18 +2,24 @@
 
 namespace Library;
 
+use Library\Commands\CreateUser;
 use Library\Contracts\RepositoryInterface;
-use Library\Repositories\BaseEloquentRepository;
-use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 use Library\Contracts\UserRepositoryInterface;
+use Library\Repositories\BaseEloquentRepository;
 use Library\Repositories\UserEloquentRepository;
+use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 
 class ServiceProvider extends BaseServiceProvider
 {
+    protected $commands = [
+        CreateUser::class
+    ];
+
     public function register()
     {
         parent::register();
         
+        $this->commands($this->commands);
         $this->loadMigrationsFrom(__DIR__.'/database/migrations');
         $this->loadRoutesFrom(__DIR__.'/routes/web.php');
         $this->bindInterfaces();

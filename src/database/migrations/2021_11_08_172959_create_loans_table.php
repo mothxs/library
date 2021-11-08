@@ -17,6 +17,8 @@ class CreateLoansTable extends Migration
             $table->id();
             $table->unsignedBigInteger('book_id');
             $table->foreign('book_id')->references('id')->on('books');
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users');
             $table->date('expiration_date');
             $table->integer('times_extended')->default(0);
             $table->timestamps();

@@ -2,13 +2,15 @@
 
 namespace Library\Repositories;
 
+use Illuminate\Database\Eloquent\Model;
 use Library\Contracts\RepositoryInterface;
 
 abstract class BaseEloquentRepository implements RepositoryInterface
 {
     /**
-     * The model namespace
+     * The model
      * 
+     * @var Model
      */
     protected $model;
 
@@ -17,11 +19,11 @@ abstract class BaseEloquentRepository implements RepositoryInterface
      * 
      * @return object;
      */
-    public function all(): object
+    public function all(): array
     {
         $items = $this->model::all();
 
-        return $items;
+        return $items->all();
     }
 
     /**
@@ -32,9 +34,7 @@ abstract class BaseEloquentRepository implements RepositoryInterface
      */
     public function find(int $id): object
     {
-        $item = $this->model::find($id);
-
-        return $item;
+        return $this->model::find($id);
     }
 
     /**
@@ -47,7 +47,11 @@ abstract class BaseEloquentRepository implements RepositoryInterface
     {
         $item = $this->model::create($data);
 
-        return $item->fresh();
+        if(!$item) {
+            return false;
+        }
+        
+        return true;
     }
 
     /**

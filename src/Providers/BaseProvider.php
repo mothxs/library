@@ -2,11 +2,14 @@
 
 namespace Library\Providers;
 
+use Library\Contracts\RepositoryInterface;
+
 abstract class BaseProvider
 {
     /**
-     * The repository class
+     * The repository
      * 
+     * @var RepositoryInterface
      */
     protected $repo;
 
@@ -30,12 +33,17 @@ abstract class BaseProvider
      * @param object $items
      * @return array
      */
-    protected function normalize(object $items): array
+    protected function normalize(object|array $items): array
     {
         $normalized = array();
 
         foreach($items as $key => $item) {
-            if(!is_object($item) or !is_array($item)) {
+            if(is_object($item)) {
+                $normalized[$key] = $item->toArray();
+                continue;
+            }
+
+            if(!is_array($item)) {
                 $normalized[$key] = $item;
                 continue;
             }

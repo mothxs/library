@@ -3,9 +3,12 @@
 namespace Library\Persisters;
 
 use Library\Persisters\BasePersister;
-use Library\UserRepositoryInterface;
+use Library\Contracts\UserRepositoryInterface;
 
 class UserPersister extends BasePersister
 {
-    protected $repo = UserRepositoryInterface::class;
+    public function __construct(UserRepositoryInterface $repo)
+    {
+        $this->repo = $repo;
+    }
 }

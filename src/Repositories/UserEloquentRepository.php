@@ -2,7 +2,8 @@
 
 namespace Library\Repositories;
 
-use App\Models\User as UserModel;
+
+use Library\Models\UserModel;
 use Library\Contracts\UserRepositoryInterface;
 
 class UserEloquentRepository extends BaseEloquentRepository implements UserRepositoryInterface

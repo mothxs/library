@@ -7,7 +7,7 @@ use Library\RepositoryInterface;
 abstract class BasePersister
 {
     /**
-     * The repository class
+     * The repository
      * 
      * @var RepositoryInterface
      */

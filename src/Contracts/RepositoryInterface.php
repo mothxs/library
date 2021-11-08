@@ -9,7 +9,7 @@ interface RepositoryInterface
      * 
      * @return object;
      */
-    public function all(): object;
+    public function all(): array;
 
     /**
      * Finds the resource for the given id

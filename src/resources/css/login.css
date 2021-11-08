@@ -1,0 +1,83 @@
+* {
+    font-family: 'Rubik', sans-serif;
+}
+
+body {
+    background-color: #989cc3;
+    background-image: url('/img/books.jpg');
+    background-position: center;
+    background-repeat: repeat;
+    background-size: auto;
+}
+
+.card {
+    border-radius: 8px;
+    box-shadow: 1px 2px 8px rgba(0, 0, 0, 0.65);
+    height: 410px;
+    margin: 250px auto 8.1rem auto;
+    width: 329px;
+    background: #fbfbfb;
+    padding: 12px 44px;
+}
+
+.card-title {
+    text-align: center;
+    padding: 20px 0;
+    margin: 0;
+    position: relative;
+}
+
+.card-title::after {
+    content: "";
+    position: absolute;
+    height: 3px;
+    width: 100%;
+    background-color: #989cc3;
+    left: 0;
+    bottom: 0;
+}
+
+.input {
+    width: 250px;
+    border: none;
+    outline: none;
+}
+
+.underline {
+    background: -webkit-linear-gradient(right, #989cc3, #989cc3);
+    height: 2px;
+    margin: -1.1rem auto 15px auto;
+  }
+
+.form {
+    padding: 10px 10px 10px 10px;
+    margin: 25px 30px;
+}
+
+label {
+    padding: 10px 0 10px 5px;
+    display: block;
+    text-align: left;
+    font-weight: bold;
+}
+
+.section {
+    margin-bottom: 20px;
+}
+
+.checkbox {
+    width: 20px;
+    height: 20px;
+}
+
+.checkbox:hover {
+    cursor: pointer;
+}
+
+.button {
+    background-color: #989cc3;
+    padding: 15px;
+    border-radius: 10px;
+    width: 7rem;
+    cursor: pointer;
+}

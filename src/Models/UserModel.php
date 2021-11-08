@@ -3,6 +3,7 @@
 namespace Library\Models;
 
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 class UserModel extends User
 {
@@ -12,6 +13,20 @@ class UserModel extends User
         'updated_at' => 'datetime:Y-m-d h:m:s',
         'deleted_at' => 'datetime:Y-m-d h:m:s',
     ];
+
+    /**
+     * The "booted" method of the model.
+     *
+     * @return void
+     */
+    protected static function booted()
+    {
+        static::creating(function ($user) {
+            if(isset($user->password)) {
+                $user->password = Hash::make($user->password);
+            }
+        });
+    }
 
     /**
      * Get the loans for the blog post.

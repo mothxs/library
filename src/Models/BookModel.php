@@ -1,0 +1,42 @@
+<?php
+
+namespace Library\Models;
+
+use Library\Models\BaseModel;
+
+class BookModel extends BaseModel
+{
+    protected $table = 'books';
+
+    /**
+     * Get the authors for the blog post.
+     */
+    public function authors()
+    {
+        return $this->belongsToMany(AuthorModel::class, 'author_book', 'book_id', 'author_id');
+    }
+
+    /**
+     * Get the editorials for the blog post.
+     */
+    public function editorials()
+    {
+        return $this->belongsToMany(EditorialModel::class, 'editorial_book', 'book_id', 'editorial_id');
+    }
+
+    /**
+     * Get the categories for the blog post.
+     */
+    public function categories()
+    {
+        return $this->belongsToMany(CategoryModel::class, 'category_book', 'book_id', 'category_id');
+    }
+
+    /**
+     * Get the loans for the blog post.
+     */
+    public function loans()
+    {
+        return $this->hasMany(LoanModel::class, 'book_id');
+    }
+}

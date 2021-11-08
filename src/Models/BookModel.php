@@ -33,10 +33,10 @@ class BookModel extends BaseModel
     }
 
     /**
-     * Get the loans for the blog post.
+     * Get the rents for the blog post.
      */
-    public function loans()
+    public function rents()
     {
-        return $this->hasMany(LoanModel::class, 'book_id');
+        return $this->hasMany(RentModel::class, 'book_id');
     }
 }

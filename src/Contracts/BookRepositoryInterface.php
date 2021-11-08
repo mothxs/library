@@ -4,6 +4,6 @@ namespace Library\Contracts;
 
 use Library\Contracts\BaseRepositoryInterface;
 
-interface UserRepositoryInterface extends BaseRepositoryInterface
+interface BookRepositoryInterface extends BaseRepositoryInterface
 {
 }

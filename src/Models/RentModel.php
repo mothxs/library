@@ -4,9 +4,9 @@ namespace Library\Models;
 
 use Library\Models\BaseModel;
 
-class LoanModel extends BaseModel
+class RentModel extends BaseModel
 {
-    protected $table = 'loans';
+    protected $table = 'rents';
 
     /**
      * Get the user that owns the comment.

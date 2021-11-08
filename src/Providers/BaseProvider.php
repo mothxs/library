@@ -2,7 +2,7 @@
 
 namespace Library\Providers;
 
-use Library\Contracts\RepositoryInterface;
+use Library\Contracts\BaseRepositoryInterface;
 
 abstract class BaseProvider
 {

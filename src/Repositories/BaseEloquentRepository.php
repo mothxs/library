@@ -3,9 +3,9 @@
 namespace Library\Repositories;
 
 use Illuminate\Database\Eloquent\Model;
-use Library\Contracts\RepositoryInterface;
+use Library\Contracts\BaseRepositoryInterface;
 
-abstract class BaseEloquentRepository implements RepositoryInterface
+abstract class BaseEloquentRepository implements BaseRepositoryInterface
 {
     /**
      * The model

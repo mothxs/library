@@ -2,7 +2,6 @@
 
 namespace Library\Repositories;
 
-
 use Library\Models\UserModel;
 use Library\Contracts\UserRepositoryInterface;
 

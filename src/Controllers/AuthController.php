@@ -3,9 +3,10 @@
 namespace Library\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 
-class AuthController
+class AuthController extends Controller
 {
     /**
      * Handle an authentication attempt.
@@ -18,10 +19,10 @@ class AuthController
         $credentials = $request->validate([
             'email' => ['required', 'email'],
             'password' => ['required'],
-            'remember' => 'bool'
+            'remember' => 'accepted'
         ]);
 
-        if (Auth::attempt(['email' => $credentials['email'], 'password' => $credentials['password']], $credentials['remember'])) {
+        if (Auth::attempt(['email' => $credentials['email'], 'password' => $credentials['password']], $credentials['remember']? true : false)) {
             $request->session()->regenerate();
 
             return redirect()->intended('dashboard');

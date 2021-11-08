@@ -2,7 +2,7 @@
 
 namespace Library\Contracts;
 
-interface RepositoryInterface
+interface BaseRepositoryInterface
 {
     /**
      * Returns all the items

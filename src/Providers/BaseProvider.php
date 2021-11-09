@@ -9,7 +9,7 @@ abstract class BaseProvider
     /**
      * The repository
      * 
-     * @var RepositoryInterface
+     * @var BaseRepositoryInterface
      */
     protected $repo;
 

@@ -41,9 +41,9 @@ abstract class BaseEloquentRepository implements BaseRepositoryInterface
      * Creates a new resource
      * 
      * @param array $data
-     * @return bool
+     * @return bool|object
      */
-    public function create(array $data = array()): bool
+    public function create(array $data = array()): bool|object
     {
         $item = $this->model::create($data);
 
@@ -51,7 +51,7 @@ abstract class BaseEloquentRepository implements BaseRepositoryInterface
             return false;
         }
         
-        return true;
+        return $item;
     }
 
     /**
@@ -59,9 +59,9 @@ abstract class BaseEloquentRepository implements BaseRepositoryInterface
      * 
      * @param int $id
      * @param array $data
-     * @return bool
+     * @return bool|object
      */
-    public function update(int $id, array $data = array()): bool
+    public function update(int $id, array $data = array()): bool|object
     {
         $item = $this->model::find($id);
 

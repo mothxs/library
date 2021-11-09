@@ -23,18 +23,18 @@ interface BaseRepositoryInterface
      * Creates a new resource
      * 
      * @param array $data
-     * @return bool
+     * @return bool|object
      */
-    public function create(array $data): bool;
+    public function create(array $data): bool|object;
 
     /**
      * Updates the resource for the given id
      * 
      * @param int $id
      * @param array $data
-     * @return bool
+     * @return bool|object
      */
-    public function update(int $id, array $data): bool;
+    public function update(int $id, array $data): bool|object;
 
     /**
      * Deletes the resource for the given id

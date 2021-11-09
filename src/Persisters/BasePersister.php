@@ -2,14 +2,14 @@
 
 namespace Library\Persisters;
 
-use Library\RepositoryInterface;
+use Library\Contracts\BaseRepositoryInterface;
 
 abstract class BasePersister
 {
     /**
      * The repository
      * 
-     * @var RepositoryInterface
+     * @var BaseRepositoryInterface
      */
     protected $repo;
 
@@ -17,11 +17,17 @@ abstract class BasePersister
      * Inserts the given data in the storage
      * 
      * @param array $data
-     * @return bool
+     * @return bool|array
      */
-    public function insert(array $data): bool
+    public function insert(array $data): bool|array
     {
-        return $this->repo->create($data);
+        $item = $this->repo->create($data);
+
+        if(!$item) {
+            return false;
+        }
+
+        return $this->normalize($item);
     }
 
      /**
@@ -29,11 +35,17 @@ abstract class BasePersister
      * 
      * @param int $id
      * @param array $data
-     * @return bool
+     * @return bool|array
      */
-    public function update(int $id, array $data): bool
+    public function update(int $id, array $data): bool|array
     {
-        return $this->repo->update($id, $data);
+        $item = $this->repo->update($id, $data);
+
+        if(!$item) {
+            return false;
+        }
+
+        return $this->normalize($item);
     }
 
      /**
@@ -56,5 +68,32 @@ abstract class BasePersister
     public function archive(int $id): bool
     {
         return $this->repo->archive($id);
+    }
+
+    /**
+     * Normalizes an object to an array
+     * 
+     * @param object $items
+     * @return array
+     */
+    protected function normalize(object|array $items): array
+    {
+        $normalized = array();
+
+        foreach($items as $key => $item) {
+            if(is_object($item)) {
+                $normalized[$key] = $item->toArray();
+                continue;
+            }
+
+            if(!is_array($item)) {
+                $normalized[$key] = $item;
+                continue;
+            }
+
+            $normalized[$key] = $this->normalize($item);
+        }
+
+        return $normalized;
     }
 }

@@ -19,13 +19,13 @@ class AuthController extends Controller
         $credentials = $request->validate([
             'email' => ['required', 'email'],
             'password' => ['required'],
-            'remember' => 'accepted'
+            'remember' => 'sometimes|accepted'
         ]);
 
-        if (Auth::attempt(['email' => $credentials['email'], 'password' => $credentials['password']], $credentials['remember']? true : false)) {
+        if (Auth::attempt(['email' => $credentials['email'], 'password' => $credentials['password']], isset($credentials['remember'])? true : false)) {
             $request->session()->regenerate();
 
-            return redirect()->intended('dashboard');
+            return redirect()->intended('/books');
         }
 
         return back()->withErrors([
@@ -47,6 +47,6 @@ class AuthController extends Controller
 
         $request->session()->regenerateToken();
 
-        return redirect('/');
+        return redirect('/login');
     }
 }

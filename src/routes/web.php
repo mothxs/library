@@ -1,8 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Library\Controllers\ViewController;
 use Library\Controllers\AuthController;
-use Library\Controllers\UserController;
 
 Route::middleware('web')->group(function() {
     Route::get('/login', function() {
@@ -11,5 +11,5 @@ Route::middleware('web')->group(function() {
     Route::post('/login', [AuthController::class, 'authenticate']);
 
 
-    Route::resource('/users', UserController::class);
+    Route::resource('/books', ViewController::class);
 });

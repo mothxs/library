@@ -1,11 +1,12 @@
 <?php
 
-namespace Library\Controllers;
+namespace Library\Controllers\Api;
 
 use Library\Providers\UserProvider;
 use Library\Persisters\UserPersister;
+use Library\Controllers\Api\BaseApiController;
 
-class UserController extends BaseController
+class UserApiController extends BaseApiController
 {
     public function __construct(
         UserPersister $userPersister,

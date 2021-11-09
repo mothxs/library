@@ -12,16 +12,14 @@ class ViewController extends Controller
      * Returns the corresponding view for the route
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
      */
-    public function index(Request $request)
+    public function index(Request $request, string $view)
     {
-        $routeUri = $request->route()->uri;
-
-        if(!View::exists('library::'.$routeUri)) {
+        if(!View::exists('library::'.$view)) {
             abort(404);
         }
 
-        return view('library::'.$routeUri);
+        return view('library::'.$view, ['view' => $view]);
     }
 }

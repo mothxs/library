@@ -13,7 +13,7 @@ Route::get('/', function () {
 Route::middleware('web')->group(function() {
     Route::get('/login', function() {
         if(Auth::user()) {
-            return redirect('books');
+            return redirect('/library/books');
         }
         return view('library::login');
     })->name('login');
@@ -22,5 +22,5 @@ Route::middleware('web')->group(function() {
 });
 
 Route::middleware(['web','auth'])->group(function() {
-    Route::resource('/books', ViewController::class);
+    Route::get('library/{view}', [ViewController::class, 'index']);
 });

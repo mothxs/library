@@ -1,0 +1,81 @@
+* {
+    font-family: 'Rubik', sans-serif;
+}
+
+body {
+    margin: 0;
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+.sidebar {
+    height: 100%;
+    width: 200px;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #008080;
+    overflow-x: hidden;
+}
+
+.sidebar ul {
+    padding: 10px 20px;
+    text-decoration: none;
+    font-size: 24px;
+    display: block;
+    list-style-type: none;
+}
+
+@media screen and (max-width: 700px) {
+    .sidebar {
+      width: 100%;
+      height: auto;
+      position: relative;
+    }
+}
+
+.app-title {
+    height: 60px;
+    background-color: black;
+    color: white;
+    text-align: center;
+    padding-top: 2em;
+}
+
+.is-active {
+    text-decoration: underline !important;
+}
+
+.menu-item a, span{
+    color: white;
+    text-decoration: none;
+    text-align: center;
+    word-wrap: break-word
+}
+
+.menu-item {
+    margin: 15px 0;
+}
+
+.icon {
+    text-align: center;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+.profile {
+    position: absolute;
+    bottom: 0;
+    padding: 10px 20px;
+    font-size: 24px;
+    width: 150px;
+}
+
+.logout {
+    color: DarkRed;
+    right: 0;
+    position: absolute;
+}
+@charset "utf-8";

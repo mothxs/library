@@ -22,6 +22,7 @@ class CreateBooksTable extends Migration
             $table->string('copyright')->nullable();
             $table->string('publishing_place')->nullable();
             $table->date('release_date')->nullable();
+            $table->string('publishing')->nullable();
             $table->integer('qty');
             $table->binary('photo')->nullable();
             $table->timestamps();

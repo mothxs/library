@@ -3,6 +3,8 @@
     @include('library::base.head')
 <body>
     @include('library::base.sidebar')
-    @section('content');
+    <div class="box" id="app">
+        @yield('content')
+    </div>
 </body>
 </html>

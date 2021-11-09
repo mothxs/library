@@ -25,7 +25,7 @@ class AuthController extends Controller
         if (Auth::attempt(['email' => $credentials['email'], 'password' => $credentials['password']], isset($credentials['remember'])? true : false)) {
             $request->session()->regenerate();
 
-            return redirect()->intended('/books');
+            return redirect()->intended('/library/books');
         }
 
         return back()->withErrors([

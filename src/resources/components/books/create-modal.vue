@@ -49,6 +49,25 @@
                   <b-field label="Copyright">
                     <b-input v-model="book.copyright"></b-input>
                   </b-field>
+                  <b-field label="Lugar de publicación">
+                    <b-input v-model="book.copyright"></b-input>
+                  </b-field>
+                  <b-field label="Stock">
+                    <b-input v-model="book.qty"></b-input>
+                  </b-field>
+                  <b-field label="Foto">
+                    <b-input v-model="book.qty"></b-input>
+                  </b-field>
+                  <b-field label="Subir foto">
+                    <b-field class="file is-primary" :class="{'has-name': !!file}">
+                      <b-upload v-model="file" class="file-label is-success" rounded>
+                        <span class="file-cta">
+                          <b-icon class="file-icon" icon="upload"></b-icon>
+                          <span class="file-label">{{ file.name || "Click to upload"}}</span>
+                        </span>
+                      </b-upload>
+                    </b-field>
+                  </b-field>
                 </div>
               </div>
             </section>
@@ -69,9 +88,26 @@ module.exports = {
     return {
       isLoading: false,
       book: {},
+      authors: [],
+      file: {}
     };
   },
+  created() {
+    this.load()
+  },
   methods: {
+    load() {
+      this.$emit("loading", true);
+      axios
+        .get("/api/authors")
+        .then((response) => {
+          this.authors = response.data
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => this.$emit("loading", false));
+    },
     save() {
       this.$emit("loading", true);
       axios

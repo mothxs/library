@@ -1,5 +1,6 @@
 <template>
   <section>
+    <b-loading v-model="isLoading"></b-loading>
     <div class="block">
       <h2 class="title is-3 is-inline">Catálogo de libros</h2>
       <b-button
@@ -14,7 +15,6 @@
     <div class="block pt-5">
       <b-table
         :data="data"
-        :loading="isLoading"
         :paginated="true"
         :mobile-cards="true"
       >
@@ -30,7 +30,8 @@
     <create-books-modal 
       v-if="showNewModal" 
       @close="showNewModal = !showNewModal"
-      @created="addNewItem($event)">
+      @created="addNewItem($event)"
+      @loading="isLoading = $event.value">
     </create-books-modal>
   </section>
 </template>

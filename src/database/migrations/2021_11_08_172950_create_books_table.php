@@ -24,7 +24,7 @@ class CreateBooksTable extends Migration
             $table->date('release_date')->nullable();
             $table->string('publishing')->nullable();
             $table->integer('qty');
-            $table->binary('photo')->nullable();
+            $table->string('photo')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

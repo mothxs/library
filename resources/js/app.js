@@ -1,8 +1,17 @@
 require('./bootstrap');
-// require('../scss/app.scss');
 
 import Vue from 'vue'
+import Buefy from 'buefy'
+import 'buefy/dist/buefy.css'
 
-var vm = new Vue({
+Vue.use(Buefy)
+
+import books from '../components/books/main.vue';
+import createBooks from '../components/books/create-modal.vue';
+
+Vue.component('books', books);
+Vue.component('create-books-modal', createBooks);
+
+new Vue({
     el: '#app'
 })

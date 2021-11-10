@@ -2,5 +2,6 @@
 
 @section('content')
     <div class="box">
+        <books></books>
     </div>
 @endsection

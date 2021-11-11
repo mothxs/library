@@ -8,6 +8,10 @@ class AuthorModel extends BaseModel
 {
     protected $table = 'authors';
 
+    protected $fillable = [
+        'name', 'surname', 'country', 'language', 'birth_date'
+    ];
+
     /**
      * Get the books for the blog post.
      */

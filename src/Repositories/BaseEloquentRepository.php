@@ -72,7 +72,7 @@ abstract class BaseEloquentRepository implements BaseRepositoryInterface
         $item->fill($data);
         $item->save();
 
-        return true;
+        return $item;
     }
 
     /**

@@ -2,7 +2,7 @@
   <section>
     <b-loading v-model="isLoading"></b-loading>
     <div class="block">
-      <h2 class="title is-3 is-inline">Catálogo de libros</h2>
+      <h2 class="title is-3 is-inline">Autores</h2>
       <b-button
         @click="showNewModal = !showNewModal"
         type="is-success is-pulled-right"
@@ -17,71 +17,59 @@
         :data="data"
         :paginated="true"
         :mobile-cards="true"
-        detailed
       >
-        <b-table-column field="title" label="Título" v-slot="props" sortable searchable>
-          {{ props.row.title }}
+        <b-table-column field="name" label="Nombre" v-slot="props" sortable searchable>
+          {{ props.row.name }}
         </b-table-column>
 
-        <b-table-column field="pages" label="Nº páginas" v-slot="props" sortable searchable>
-          {{ props.row.pages }}
+        <b-table-column field="surname" label="Apellido" v-slot="props" sortable searchable>
+          {{ props.row.surname }}
         </b-table-column>
 
-        <b-table-column field="isbn" label="ISBN" v-slot="props" sortable searchable>
-          {{ props.row.isbn }}
+        <b-table-column field="country" label="País" v-slot="props" sortable searchable>
+          {{ props.row.country }}
         </b-table-column>
 
-        <b-table-column field="qty" label="Stock" v-slot="props" sortable searchable>
-          {{ props.row.qty }}
+        <b-table-column field="language" label="Idioma de escritura" v-slot="props" sortable searchable>
+          {{ props.row.language }}
+        </b-table-column>
+
+        <b-table-column field="birth_date" label="Fecha de nacimiento" v-slot="props" sortable searchable>
+          {{ props.row.birth_date }}
         </b-table-column>
 
         <b-table-column v-slot="props">
           <b-button icon-left="pencil" type="is-warning" @click="showEdit(props.row)">
           </b-button>
+          <b-button icon-left="delete" type="is-danger" @click="showDelete(props.row)">
+          </b-button>
         </b-table-column>
-
-        <template #detail="props">
-            <article class="media">
-                <figure class="media-left">
-                    <p class="image is-128x128">
-                        <img v-if="props.row.photo" :src="'/'+props.row.photo">
-                        <img v-else :src="'https://buefy.org/static/img/placeholder-128x128.png'" alt="Book image">
-                    </p>
-                </figure>
-                <div class="media-content">
-                    <div class="content">
-                        <p>
-                          Tipo de tapa: {{ props.row.cover_type }}
-                          <br>
-                          Copyright: {{ props.row.copyright }}
-                          <br>
-                          Lugar de publicación: {{ props.row.publishing_place }}
-                          <br>
-                          Fecha de publicación: {{ props.row.release_date }}
-                        </p>
-                    </div>
-                </div>
-            </article>
-        </template>
 
         <template #empty>
           <div class="has-text-centered">No hay datos</div>
         </template>
       </b-table>
     </div>
-    <create-books-modal 
+    <create-authors-modal 
       v-if="showNewModal" 
       @close="showNewModal = !showNewModal"
       @created="addNewItem($event)"
       @loading="isLoading = $event.value">
-    </create-books-modal>
-    <edit-books-modal 
+    </create-authors-modal>
+    <edit-authors-modal 
       v-if="showEditModal" 
       @close="showEditModal = !showEditModal"
       @updated="editItem($event)"
       @loading="isLoading = $event.value"
       :item="selectedItem">
-    </edit-books-modal>
+    </edit-authors-modal>
+    <delete-authors-modal 
+      v-if="showDeleteModal" 
+      @close="showDeleteModal = !showDeleteModal"
+      @deleted="remove($event)"
+      @loading="isLoading = $event.value"
+      :item="selectedItem">
+    </delete-authors-modal>
   </section>
 </template>
 
@@ -104,7 +92,7 @@ export default {
     load() {
       this.isLoading = true;
       axios
-        .get("/api/books")
+        .get("/api/authors")
         .then(response => {
           this.data = response.data;
         })
@@ -112,23 +100,32 @@ export default {
           this.$buefy.toast.open({
             message: 'Error al cargar el catálogo',
             type: 'is-danger'
-          })
+          });
         })
         .finally(() => {
-          this.isLoading = false
+          this.isLoading = false;
         });
     },
     addNewItem(newItem) {
-      this.data.push(newItem)
-      this.showNewModal = false
+      this.data.push(newItem);
+      this.showNewModal = false;
     },
     showEdit(item) {
       this.selectedItem = item;
       this.showEditModal = true;
     },
-    editItem(editemItem) {
-      this.selectedItem = editemItem;
-      this.showEditModal = false
+    editItem(editedItem) {
+      this.selectedItem = editedItem;
+      this.showEditModal = false;
+    },
+    showDelete(item) {
+      this.selectedItem = item;
+      this.showDeleteModal = true;
+    },
+    remove() {
+      const index = this.data.findIndex(item => item.id == this.selectedItem.id);
+      this.data.splice(index, index >= 0 ? 1 : 0);
+      this.showDeleteModal = false;
     }
   },
 };

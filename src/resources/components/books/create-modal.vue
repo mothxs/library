@@ -6,7 +6,6 @@
       trap-focus
       :destroy-on-hide="false"
       aria-role="dialog"
-      aria-label="Example Modal"
       close-button-aria-label="Close"
       aria-modal
       width="1600"
@@ -26,7 +25,7 @@
                   </b-field>
                   <b-field label="Fecha de publicación" :type="getInputType('release_date')" :message="getErrorMessage('release_date')">
                     <b-datepicker
-                      v-model="book.release_date"
+                      v-model="date"
                       :show-week-number="true"
                       locale="es-ES"
                       placeholder="Click para seleccionar..."
@@ -60,7 +59,7 @@
                       <b-upload v-model="file" class="file-label is-success" rounded>
                         <span class="file-cta">
                           <b-icon class="file-icon" icon="upload"></b-icon>
-                          <span class="file-label">{{ file.name || "Click to upload"}}</span>
+                          <span class="file-label">{{ file.name || "Click para seleccionar"}}</span>
                         </span>
                       </b-upload>
                     </b-field>
@@ -87,7 +86,8 @@ export default {
       book: {},
       authors: [],
       file: {},
-      errors: []
+      errors: [],
+      date: undefined
     };
   },
   created() {
@@ -124,8 +124,8 @@ export default {
         }
       }
 
-      if(this.book.release_date) {
-        this.book.release_date = this.formatDate(this.book.release_date)
+      if(this.date) {
+        this.book.release_date = this.formatDate(this.date)
       }
 
       axios.post("/api/books", this.book).then(response => {

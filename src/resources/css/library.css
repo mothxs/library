@@ -168,8 +168,9 @@ body {
     color: white;
 }
 
-a:hover {
+.library-menu-link:hover {
     text-decoration: underline;
+    color:white;
 }
 
 [v-cloak] { display: none }

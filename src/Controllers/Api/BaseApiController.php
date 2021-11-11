@@ -115,7 +115,7 @@ class BaseApiController extends Controller
         $validatedData = $request->validate($this->updateValidationRules);
 
         try {
-            $item = $this->provider->update($id, $validatedData);
+            $item = $this->persister->update($id, $validatedData);
         } catch(Exception $e) {
             Log::warning('Error updating the resource with the id '.$id.'. '.$e->getMessage());
             return response()->json(['error' => 'Error updating the resource with the id '.$id.'.']);
@@ -137,14 +137,14 @@ class BaseApiController extends Controller
     public function destroy($id)
     {
         try {
-            $deleted = $this->provider->archive($id);
+            $deleted = $this->persister->archive($id);
         } catch(Exception $e) {
             Log::warning('Error deleting the resource with the id '.$id.'. '.$e->getMessage());
             return response()->json(['error' => 'Error deleting the resource with the id '.$id.'.']);
         }
 
         if(!$deleted) {
-            return response()->json([], 422);
+            return response()->json(['error' => 'Error deleting the resource'], 422);
         }
 
         return response()->json();

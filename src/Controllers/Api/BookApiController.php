@@ -9,7 +9,7 @@ use Library\Controllers\Api\BaseApiController;
 class BookApiController extends BaseApiController
 {
     protected $createValidationRules = [
-        'title'            => 'required|string|unique:books',
+        'title'            => 'required|string',
         'isbn'             => 'required|string',
         'pages'            => 'required|integer',
         'cover_type'       => 'nullable|string',

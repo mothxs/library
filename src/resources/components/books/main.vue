@@ -35,8 +35,8 @@
           {{ props.row.qty }}
         </b-table-column>
 
-        <b-table-column>
-          <b-button icon-left="pencil" type="is-warning">
+        <b-table-column v-slot="props">
+          <b-button icon-left="pencil" type="is-warning" @click="showEdit(props.row)">
           </b-button>
         </b-table-column>
 
@@ -45,7 +45,7 @@
                 <figure class="media-left">
                     <p class="image is-128x128">
                         <img v-if="props.row.photo" :src="'/'+props.row.photo">
-                        <img v-else :src="'https://buefy.org/static/img/placeholder-128x128.png'">
+                        <img v-else :src="'https://buefy.org/static/img/placeholder-128x128.png'" alt="Book image">
                     </p>
                 </figure>
                 <div class="media-content">
@@ -75,6 +75,13 @@
       @created="addNewItem($event)"
       @loading="isLoading = $event.value">
     </create-books-modal>
+    <edit-books-modal 
+      v-if="showEditModal" 
+      @close="showEditModal = !showEditModal"
+      @updated="editItem($event)"
+      @loading="isLoading = $event.value"
+      :item="selectedItem">
+    </edit-books-modal>
   </section>
 </template>
 
@@ -85,6 +92,9 @@ export default {
       isLoading: false,
       data: [],
       showNewModal: false,
+      showEditModal: false,
+      showDeleteModal: false,
+      selectedItem: {}
     };
   },
   created() {
@@ -111,6 +121,14 @@ export default {
     addNewItem(newItem) {
       this.data.push(newItem)
       this.showNewModal = false
+    },
+    showEdit(item) {
+      this.selectedItem = item;
+      this.showEditModal = true;
+    },
+    editItem(editemItem) {
+      this.selectedItem = editemItem;
+      this.showEditModal = false
     }
   },
 };

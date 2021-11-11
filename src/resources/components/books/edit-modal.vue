@@ -14,7 +14,7 @@
         <form action="">
           <div class="modal-card" style="width: auto">
             <header class="modal-card-head">
-              <p class="modal-card-title">Nuevo libro</p>
+              <p class="modal-card-title">Editar libro</p>
               <button type="button" class="delete" @click="$emit('close')" />
             </header>
             <section class="modal-card-body">
@@ -68,7 +68,7 @@
               </div>
             </section>
             <footer class="modal-card-foot">
-              <b-button label="Crear" type="is-success" @click="create"/>
+              <b-button label="Actualizar" type="is-success" @click="update"/>
               <b-button label="Cerrar" @click="$emit('close')"/>
             </footer>
           </div>
@@ -80,6 +80,12 @@
 
 <script>
 export default {
+  props: {
+    item: {
+      type: Object,
+      required: true
+    }
+  },
   data: function () {
     return {
       isLoading: false,
@@ -91,6 +97,10 @@ export default {
     };
   },
   created() {
+    this.book = this.item;
+    if(this.book.release_date) {
+      this.date = new Date(this.book.release_date)
+    }
     this.load()
   },
   methods: {
@@ -105,7 +115,7 @@ export default {
         this.$emit("loading", false)
       });
     },
-    async create() {
+    async update() {
       this.$emit("loading", true);
 
       const formData = new FormData();
@@ -128,16 +138,16 @@ export default {
         this.book.release_date = this.formatDate(this.date)
       }
 
-      axios.post("/api/books", this.book).then(response => {
+      axios.put("/api/books/"+this.book.id, this.book).then(response => {
         this.$buefy.toast.open({
-            message: '¡Libro creado con éxito!',
+            message: '¡Libro actualizado con éxito!',
             type: 'is-success'
         })
-        this.$emit('created', response.data);
+        this.$emit('updated', response.data);
       })
       .catch(error => {
         this.$buefy.toast.open({
-            message: 'Error al crear un nuevo libro',
+            message: 'Error al actualizar el libro',
             type: 'is-danger'
         })
 

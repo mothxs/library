@@ -9,7 +9,7 @@ class BookModel extends BaseModel
     protected $table = 'books';
 
     protected $fillable = [ 
-        'title', 'isbn', 'pages', 'cover_types',
+        'title', 'isbn', 'pages', 'cover_type',
         'copyright', 'publishing_place', 'release_date', 'qty', 'photo'
     ];
 

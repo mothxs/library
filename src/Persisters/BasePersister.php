@@ -80,6 +80,10 @@ abstract class BasePersister
     {
         $normalized = array();
 
+        if(is_object($items)) {
+            return $items->toArray();
+        }
+
         foreach($items as $key => $item) {
             if(is_object($item)) {
                 $normalized[$key] = $item->toArray();

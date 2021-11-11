@@ -11,7 +11,7 @@
       aria-modal
       width="1600"
     >
-      <template #default="props">
+      <template>
         <form action="">
           <div class="modal-card" style="width: auto">
             <header class="modal-card-head">
@@ -21,12 +21,12 @@
             <section class="modal-card-body">
               <div class="columns">
                 <div class="column">
-                  <b-field label="Título">
+                  <b-field label="Título" :type="getInputType('title')" :message="getErrorMessage('title')">
                     <b-input v-model="book.title" required></b-input>
                   </b-field>
-                  <b-field label="Fecha de publicación">
+                  <b-field label="Fecha de publicación" :type="getInputType('release_date')" :message="getErrorMessage('release_date')">
                     <b-datepicker
-                      v-model="book.date"
+                      v-model="book.release_date"
                       :show-week-number="true"
                       locale="es-ES"
                       placeholder="Click para seleccionar..."
@@ -35,30 +35,27 @@
                     >
                     </b-datepicker>
                   </b-field>
-                  <b-field label="ISBN">
+                  <b-field label="ISBN" :type="getInputType('isbn')" :message="getErrorMessage('isbn')">
                     <b-input v-model="book.isbn"></b-input>
                   </b-field>
-                  <b-field label="Nº de páginas">
+                  <b-field label="Nº de páginas" :type="getInputType('pages')" :message="getErrorMessage('pages')">
                     <b-input v-model="book.pages"></b-input>
                   </b-field>
-                  <b-field label="Tipo de tapa">
+                  <b-field label="Tipo de tapa" :type="getInputType('cover_type')" :message="getErrorMessage('cover_type')">
                     <b-input v-model="book.cover_type"></b-input>
                   </b-field>
                 </div>
                 <div class="column">
-                  <b-field label="Copyright">
+                  <b-field label="Copyright" :type="getInputType('copyright')" :message="getErrorMessage('copyright')">
                     <b-input v-model="book.copyright"></b-input>
                   </b-field>
-                  <b-field label="Lugar de publicación">
-                    <b-input v-model="book.copyright"></b-input>
+                  <b-field label="Lugar de publicación" :type="getInputType('publishing_place')" :message="getErrorMessage('publishing_place')">
+                    <b-input v-model="book.publishing_place"></b-input>
                   </b-field>
-                  <b-field label="Stock">
+                  <b-field label="Stock" :type="getInputType('qty')" :message="getErrorMessage('qty')">
                     <b-input v-model="book.qty"></b-input>
                   </b-field>
-                  <b-field label="Foto">
-                    <b-input v-model="book.qty"></b-input>
-                  </b-field>
-                  <b-field label="Subir foto">
+                  <b-field label="Subir foto" :type="getInputType('photo')" :message="getErrorMessage('photo')">
                     <b-field class="file is-primary" :class="{'has-name': !!file}">
                       <b-upload v-model="file" class="file-label is-success" rounded>
                         <span class="file-cta">
@@ -72,8 +69,8 @@
               </div>
             </section>
             <footer class="modal-card-foot">
-              <b-button label="Crear" type="is-success" />
-              <b-button label="Cerrar" @click="$emit('close')" />
+              <b-button label="Crear" type="is-success" @click="create"/>
+              <b-button label="Cerrar" @click="$emit('close')"/>
             </footer>
           </div>
         </form>
@@ -83,13 +80,14 @@
 </template>
 
 <script>
-module.exports = {
+export default {
   data: function () {
     return {
       isLoading: false,
       book: {},
       authors: [],
-      file: {}
+      file: {},
+      errors: []
     };
   },
   created() {
@@ -98,28 +96,84 @@ module.exports = {
   methods: {
     load() {
       this.$emit("loading", true);
-      axios
-        .get("/api/authors")
-        .then((response) => {
-          this.authors = response.data
-        })
-        .catch((error) => {
-          console.log(error);
-        })
-        .finally(() => this.$emit("loading", false));
+      axios.get("/api/authors").then((response) => {
+        this.authors = response.data
+      })
+      .catch((error) => {
+      })
+      .finally(() => {
+        this.$emit("loading", false)
+      });
     },
-    save() {
+    async create() {
       this.$emit("loading", true);
-      axios
-        .get("/api/books")
-        .then((response) => {
-          this.$emit(response.data);
+
+      const formData = new FormData();
+      
+      if(this.file.name) {
+        formData.append('file', this.file, this.file.name);
+        let response = await axios.post("/api/images", formData);
+
+        if(response.status == 200) {
+          this.book.photo = response.data.name;
+        } else {
+          this.$buefy.toast.open({
+            message: 'Error al subir la imagen',
+            type: 'is-danger'
+          })
+        }
+      }
+
+      if(this.book.release_date) {
+        this.book.release_date = this.formatDate(this.book.release_date)
+      }
+
+      axios.post("/api/books", this.book).then(response => {
+        this.$buefy.toast.open({
+            message: '¡Libro creado con éxito!',
+            type: 'is-success'
         })
-        .catch((error) => {
-          console.log(error);
+        this.$emit('created', response.data);
+      })
+      .catch(error => {
+        this.$buefy.toast.open({
+            message: 'Error al crear un nuevo libro',
+            type: 'is-danger'
         })
-        .finally(() => this.$emit("loading", false));
+
+        if(error.response.status == 422) {
+          this.errors = error.response.data.errors
+        }
+      })
+      .finally(() => {
+        this.$emit("loading", false)
+      });
     },
+    getInputType(input) {
+      if(this.errors[input]) {
+        return 'is-danger';
+      }
+      return '';
+    },
+    getErrorMessage(input) {
+      if(this.errors[input]) {
+        return this.errors[input][0];
+      }
+      return '';
+    },
+    formatDate(date) {
+      var d = new Date(date),
+          month = '' + (d.getMonth() + 1),
+          day = '' + d.getDate(),
+          year = d.getFullYear();
+
+      if (month.length < 2) 
+          month = '0' + month;
+      if (day.length < 2) 
+          day = '0' + day;
+
+      return [year, month, day].join('-');
+    }
   },
 };
 </script>

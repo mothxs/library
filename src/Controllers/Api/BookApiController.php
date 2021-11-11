@@ -8,6 +8,30 @@ use Library\Controllers\Api\BaseApiController;
 
 class BookApiController extends BaseApiController
 {
+    protected $createValidationRules = [
+        'title'            => 'required|string|unique:books',
+        'isbn'             => 'required|string',
+        'pages'            => 'required|integer',
+        'cover_type'       => 'nullable|string',
+        'copyright'        => 'nullable|string',
+        'publishing_place' => 'nullable|string',
+        'release_date'     => 'nullable|date_format:Y-m-d',
+        'qty'              => 'required|integer',
+        'photo'            => 'nullable|string'
+    ];
+
+    protected $updateValidationRules = [
+        'title'            => 'required|string',
+        'isbn'             => 'required|string',
+        'pages'            => 'required|integer',
+        'cover_type'       => 'nullable|string',
+        'copyright'        => 'nullable|string',
+        'publishing_place' => 'nullable|string',
+        'release_date'     => 'nullable|date_format:Y-m-d',
+        'qty'              => 'required|integer',
+        'photo'            => 'nullable|string'
+    ];
+
     public function __construct(
         BookPersister $bookPersister,
         BookProvider $bookProvider

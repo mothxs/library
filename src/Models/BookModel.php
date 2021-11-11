@@ -8,6 +8,11 @@ class BookModel extends BaseModel
 {
     protected $table = 'books';
 
+    protected $fillable = [ 
+        'title', 'isbn', 'pages', 'cover_types',
+        'copyright', 'publishing_place', 'release_date', 'qty', 'photo'
+    ];
+
     /**
      * Get the authors for the blog post.
      */

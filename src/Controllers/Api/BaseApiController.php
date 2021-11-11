@@ -25,6 +25,20 @@ class BaseApiController extends Controller
      * 
      */
     protected $provider;
+
+    /**
+     * Validation rules for creating a new resource
+     * 
+     * @var array
+     */
+    protected $createValidationRules = array();
+
+    /**
+     * Validation rules for updating a new resource
+     * 
+     * @var array
+     */
+    protected $updateValidationRules = array();
     
     /**
      * Display a listing of the resource.
@@ -56,7 +70,7 @@ class BaseApiController extends Controller
         try {
             $item = $this->persister->insert($validatedData);
         } catch(Exception $e) {
-            Log::warning('Error listing the resources. '.$e->getMessage());
+            Log::warning('Error creating a new resource. '.$e->getMessage());
             return response()->json(['error' => 'Error creating a new resource.']);
         }
 

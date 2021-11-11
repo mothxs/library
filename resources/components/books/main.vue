@@ -17,10 +17,52 @@
         :data="data"
         :paginated="true"
         :mobile-cards="true"
+        detailed
       >
-        <b-table-column field="title" label="Título" v-slot="props">
+        <b-table-column field="title" label="Título" v-slot="props" sortable searchable>
           {{ props.row.title }}
         </b-table-column>
+
+        <b-table-column field="pages" label="Nº páginas" v-slot="props" sortable searchable>
+          {{ props.row.pages }}
+        </b-table-column>
+
+        <b-table-column field="isbn" label="ISBN" v-slot="props" sortable searchable>
+          {{ props.row.isbn }}
+        </b-table-column>
+
+        <b-table-column field="qty" label="Stock" v-slot="props" sortable searchable>
+          {{ props.row.qty }}
+        </b-table-column>
+
+        <b-table-column>
+          <b-button icon-left="pencil" type="is-warning">
+          </b-button>
+        </b-table-column>
+
+        <template #detail="props">
+            <article class="media">
+                <figure class="media-left">
+                    <p class="image is-128x128">
+                        <img v-if="props.row.photo" :src="'/'+props.row.photo">
+                        <img v-else :src="'https://buefy.org/static/img/placeholder-128x128.png'">
+                    </p>
+                </figure>
+                <div class="media-content">
+                    <div class="content">
+                        <p>
+                          Tipo de tapa: {{ props.row.cover_type }}
+                          <br>
+                          Copyright: {{ props.row.copyright }}
+                          <br>
+                          Lugar de publicación: {{ props.row.publishing_place }}
+                          <br>
+                          Fecha de publicación: {{ props.row.release_date }}
+                        </p>
+                    </div>
+                </div>
+            </article>
+        </template>
 
         <template #empty>
           <div class="has-text-centered">No hay datos</div>
@@ -37,7 +79,7 @@
 </template>
 
 <script>
-module.exports = {
+export default {
   data: function () {
     return {
       isLoading: false,
@@ -53,16 +95,20 @@ module.exports = {
       this.isLoading = true;
       axios
         .get("/api/books")
-        .then((response) => {
+        .then(response => {
           this.data = response.data;
         })
-        .catch((error) => {
-          console.log(error);
+        .catch(error => {
+          this.$buefy.toast.open({
+            message: 'Error al cargar el catálogo',
+            type: 'is-danger'
+          })
         })
-        .finally(() => (this.isLoading = false));
+        .finally(() => {
+          this.isLoading = false
+        });
     },
     addNewItem(newItem) {
-      console.log(newItem)
       this.data.push(newItem)
       this.showNewModal = false
     }

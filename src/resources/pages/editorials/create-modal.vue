@@ -89,14 +89,14 @@ export default {
 
       axios.post("/api/editorials", this.editorial).then(response => {
         this.$buefy.toast.open({
-            message: 'Autor creado con éxito!',
+            message: 'Editorial creada con éxito!',
             type: 'is-success'
         })
         this.$emit('created', response.data);
       })
       .catch(error => {
         this.$buefy.toast.open({
-            message: 'Error al crear un nuevo autor',
+            message: 'Error al crear una nueva editorial',
             type: 'is-danger'
         })
 

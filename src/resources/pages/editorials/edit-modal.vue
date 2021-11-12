@@ -85,14 +85,14 @@ export default {
 
       axios.put("/api/editorials/"+this.editorial.id, this.editorial).then(response => {
         this.$buefy.toast.open({
-            message: '¡Autor actualizado con éxito!',
+            message: '¡Editorial actualizada con éxito!',
             type: 'is-success'
         })
         this.$emit('updated', response.data);
       })
       .catch(error => {
         this.$buefy.toast.open({
-            message: 'Error al actualizar el autor',
+            message: 'Error al actualizar la editorial',
             type: 'is-danger'
         })
 

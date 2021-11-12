@@ -53,7 +53,7 @@ export default {
 
       axios.delete("/api/editorials/"+this.editorial.id).then(response => {
         this.$buefy.toast.open({
-            message: 'Editorial archivada con éxito!',
+            message: '¡Editorial archivada con éxito!',
             type: 'is-success'
         })
         this.$emit('deleted');

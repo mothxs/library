@@ -13,7 +13,7 @@
         <form action="">
           <div class="modal-card" style="width: 960">
             <header class="modal-card-head">
-              <p class="modal-card-title">Archivar autor</p>
+              <p class="modal-card-title">Archivar editorial</p>
               <button type="button" class="delete" @click="$emit('close')" />
             </header>
             <section class="modal-card-body">
@@ -41,26 +41,26 @@ export default {
   data: function () {
     return {
       isLoading: false,
-      author: {}
+      editorial: {}
     };
   },
   created() {
-    this.author = this.item;
+    this.editorial = this.item;
   },
   methods: {
     destroy() {
       this.$emit("loading", true);
 
-      axios.delete("/api/authors/"+this.author.id).then(response => {
+      axios.delete("/api/editorials/"+this.editorial.id).then(response => {
         this.$buefy.toast.open({
-            message: 'Autor archivado con éxito!',
+            message: 'Editorial archivada con éxito!',
             type: 'is-success'
         })
         this.$emit('deleted');
       })
       .catch(error => {
         this.$buefy.toast.open({
-            message: 'Error al archivado un nuevo autor',
+            message: 'Error al archivar la editorial',
             type: 'is-danger'
         })
       })

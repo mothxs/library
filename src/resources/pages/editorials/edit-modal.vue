@@ -13,19 +13,19 @@
         <form action="">
           <div class="modal-card" style="width: 960">
             <header class="modal-card-head">
-              <p class="modal-card-title">Editar autor</p>
+              <p class="modal-card-title">Editar editorial</p>
               <button type="button" class="delete" @click="$emit('close')" />
             </header>
             <section class="modal-card-body">
               <div class="columns">
                 <div class="column">
                   <b-field label="Nombre" :type="getInputType('name')" :message="getErrorMessage('name')">
-                    <b-input v-model="item.name" required></b-input>
+                    <b-input v-model="editorial.name" required></b-input>
                   </b-field>
-                  <b-field label="Apellido" :type="getInputType('surname')" :message="getErrorMessage('surname')">
-                    <b-input v-model="item.surname"></b-input>
+                  <b-field label="País" :type="getInputType('country')" :message="getErrorMessage('country')">
+                    <b-input v-model="editorial.country"></b-input>
                   </b-field>
-                  <b-field label="Fecha de nacimiento" :type="getInputType('birth_date')" :message="getErrorMessage('birth_date')">
+                  <b-field label="Fecha de fundación" :type="getInputType('foundation_date')" :message="getErrorMessage('foundation_date')">
                     <b-datepicker
                       v-model="date"
                       :show-week-number="true"
@@ -36,11 +36,8 @@
                     >
                     </b-datepicker>
                   </b-field>
-                  <b-field label="País" :type="getInputType('country')" :message="getErrorMessage('country')">
-                    <b-input v-model="item.country"></b-input>
-                  </b-field>
-                  <b-field label="Idioma de escritura" :type="getInputType('language')" :message="getErrorMessage('language')">
-                    <b-input v-model="item.language"></b-input>
+                  <b-field label="Página web" :type="getInputType('website')" :message="getErrorMessage('website')">
+                    <b-input v-model="editorial.website"></b-input>
                   </b-field>
                 </div>
               </div>
@@ -66,16 +63,16 @@ export default {
   data: function () {
     return {
       isLoading: false,
-      author: {},
+      editorial: {},
       file: {},
       errors: [],
       date: undefined
     };
   },
   created() {
-    this.author = this.item;
-    if(this.author.birth_date) {
-      this.date = new Date(this.author.birth_date)
+    this.editorial = this.item;
+    if(this.editorial.foundation_date) {
+      this.date = new Date(this.editorial.foundation_date)
     }
   },
   methods: {
@@ -83,10 +80,10 @@ export default {
       this.$emit("loading", true);
 
       if(this.date) {
-        this.author.birth_date = this.formatDate(this.date)
+        this.editorial.foundation_date = this.formatDate(this.date)
       }
 
-      axios.put("/api/authors/"+this.author.id, this.author).then(response => {
+      axios.put("/api/editorials/"+this.editorial.id, this.editorial).then(response => {
         this.$buefy.toast.open({
             message: '¡Autor actualizado con éxito!',
             type: 'is-success'

@@ -2,13 +2,13 @@
   <section>
     <b-loading v-model="isLoading"></b-loading>
     <div class="block">
-      <h2 class="title is-3 is-inline">Autores</h2>
+      <h2 class="title is-3 is-inline">Editoriales</h2>
       <b-button
         @click="showNewModal = !showNewModal"
         type="is-success is-pulled-right"
         icon-left="plus"
         >
-        Nuevo
+        Nueva
       </b-button
       >
     </div>
@@ -22,20 +22,16 @@
           {{ props.row.name }}
         </b-table-column>
 
-        <b-table-column field="surname" label="Apellido" v-slot="props" sortable searchable>
-          {{ props.row.surname }}
-        </b-table-column>
-
-        <b-table-column field="country" label="País" v-slot="props" sortable searchable>
+            <b-table-column field="country" label="País" v-slot="props" sortable searchable>
           {{ props.row.country }}
         </b-table-column>
 
-        <b-table-column field="language" label="Idioma de escritura" v-slot="props" sortable searchable>
-          {{ props.row.language }}
+        <b-table-column field="foundation_date" label="Fecha de fundación" v-slot="props" sortable searchable>
+          {{ props.row.foundation_date }}
         </b-table-column>
 
-        <b-table-column field="birth_date" label="Fecha de nacimiento" v-slot="props" sortable searchable>
-          {{ props.row.birth_date }}
+        <b-table-column field="website" label="Página web" v-slot="props" sortable searchable>
+          <a v-if="props.row.website">{{ props.row.website }}</a>
         </b-table-column>
 
         <b-table-column v-slot="props">
@@ -50,26 +46,26 @@
         </template>
       </b-table>
     </div>
-    <create-authors-modal 
+    <create-editorial-modal 
       v-if="showNewModal" 
       @close="showNewModal = !showNewModal"
       @created="addNewItem($event)"
       @loading="isLoading = $event.value">
-    </create-authors-modal>
-    <edit-authors-modal 
+    </create-editorial-modal>
+    <edit-editorial-modal 
       v-if="showEditModal" 
       @close="showEditModal = !showEditModal"
       @updated="editItem($event)"
       @loading="isLoading = $event.value"
       :item="selectedItem">
-    </edit-authors-modal>
-    <delete-authors-modal 
+    </edit-editorial-modal>
+    <delete-editorial-modal 
       v-if="showDeleteModal" 
       @close="showDeleteModal = !showDeleteModal"
       @deleted="remove($event)"
       @loading="isLoading = $event.value"
       :item="selectedItem">
-    </delete-authors-modal>
+    </delete-editorial-modal>
   </section>
 </template>
 
@@ -92,31 +88,31 @@ export default {
     load() {
       this.isLoading = true;
       axios
-        .get("/api/authors")
+        .get("/api/editorials")
         .then(response => {
           this.data = response.data;
         })
         .catch(error => {
           this.$buefy.toast.open({
-            message: 'Error al cargar el catálogo',
+            message: 'Error al cargar las editoriales',
             type: 'is-danger'
-          });
+          })
         })
         .finally(() => {
-          this.isLoading = false;
+          this.isLoading = false
         });
     },
     addNewItem(newItem) {
-      this.data.push(newItem);
-      this.showNewModal = false;
+      this.data.push(newItem)
+      this.showNewModal = false
     },
     showEdit(item) {
       this.selectedItem = item;
       this.showEditModal = true;
     },
-    editItem(editedItem) {
-      this.selectedItem = editedItem;
-      this.showEditModal = false;
+    editItem(editemItem) {
+      this.selectedItem = editemItem;
+      this.showEditModal = false
     },
     showDelete(item) {
       this.selectedItem = item;

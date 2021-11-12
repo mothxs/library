@@ -16,12 +16,6 @@
             </li>
             <li class="library-menu-item">
                 <span class="library-icon material-icons">
-                    category
-                </span>
-                <a href="/library/categories" class="library-menu-link {{ $view == 'categories'? 'library-is-active' : ''}}">Categorías</a>
-            </li>
-            <li class="library-menu-item">
-                <span class="library-icon material-icons">
                     store_mall_directory
                 </span>
                 <a href="/library/editorials" class="library-menu-link {{ $view == 'editorials'? 'library-is-active' : ''}}">Editoriales</a>

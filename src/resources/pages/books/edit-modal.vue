@@ -38,7 +38,7 @@
                     <b-input v-model="book.isbn"></b-input>
                   </b-field>
                   <b-field label="Nº de páginas" :type="getInputType('pages')" :message="getErrorMessage('pages')">
-                    <b-input v-model="book.pages"></b-input>
+                    <b-input v-model="book.pages" type="number" min="1"></b-input>
                   </b-field>
                   <b-field label="Tipo de tapa" :type="getInputType('cover_type')" :message="getErrorMessage('cover_type')">
                     <b-input v-model="book.cover_type"></b-input>
@@ -52,7 +52,7 @@
                     <b-input v-model="book.publishing_place"></b-input>
                   </b-field>
                   <b-field label="Stock" :type="getInputType('qty')" :message="getErrorMessage('qty')">
-                    <b-input v-model="book.qty"></b-input>
+                    <b-input v-model="book.qty" type="number" min="0"></b-input>
                   </b-field>
                   <b-field label="Subir foto" :type="getInputType('photo')" :message="getErrorMessage('photo')">
                     <b-field class="file is-primary" :class="{'has-name': !!file}">

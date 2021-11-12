@@ -17,7 +17,7 @@ interface BaseRepositoryInterface
      * @param int $id
      * @return object
      */
-    public function find(int $id): object;
+    public function find(int $id): object|null;
 
     /**
      * Creates a new resource

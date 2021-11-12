@@ -37,7 +37,7 @@ class ServiceProvider extends BaseServiceProvider
         $this->publishes([__DIR__.'/resources/css/login.css' => public_path('css/login.css')], 'public');
         $this->publishes([
             __DIR__.'/resources/css/library.css' => resource_path('css/library.css'),
-            __DIR__.'/resources/components' => resource_path('components'),
+            __DIR__.'/resources/pages' => resource_path('pages'),
         ], 'resource');
         $this->publishes([__DIR__.'/resources/img' => public_path('img')], 'public');
         $this->bindInterfaces();

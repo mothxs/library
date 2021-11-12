@@ -27,14 +27,14 @@ class BaseApiController extends Controller
     protected $provider;
 
     /**
-     * Validation rules for creating a new resource
+     * Create validation rules
      * 
      * @var array
      */
     protected $createValidationRules = array();
 
     /**
-     * Validation rules for updating a new resource
+     * Update validation rules
      * 
      * @var array
      */

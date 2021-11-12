@@ -32,7 +32,7 @@ abstract class BaseEloquentRepository implements BaseRepositoryInterface
      * @param int $id
      * @return object
      */
-    public function find(int $id): object
+    public function find(int $id): object|null
     {
         return $this->model::find($id);
     }

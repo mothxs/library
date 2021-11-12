@@ -8,6 +8,10 @@ class EditorialModel extends BaseModel
 {
     protected $table = 'editorials';
 
+    protected $fillable = [ 
+        'name', 'country', 'foundation_date', 'website',
+    ];
+
      /**
      * Get the books for the blog post.
      */

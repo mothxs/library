@@ -17,8 +17,8 @@ class CreateRentsTable extends Migration
             $table->id();
             $table->unsignedBigInteger('book_id');
             $table->foreign('book_id')->references('id')->on('books');
-            $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->unsignedBigInteger('partner_id');
+            $table->foreign('partner_id')->references('id')->on('partners');
             $table->date('expiration_date');
             $table->integer('times_extended')->default(0);
             $table->timestamps();

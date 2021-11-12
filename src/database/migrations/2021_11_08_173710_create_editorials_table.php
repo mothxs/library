@@ -20,6 +20,7 @@ class CreateEditorialsTable extends Migration
             $table->date('foundation_date')->nullable();
             $table->string('website')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

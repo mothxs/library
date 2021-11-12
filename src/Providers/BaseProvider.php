@@ -24,6 +24,10 @@ abstract class BaseProvider
     {
         $item = $this->repo->find($id);
 
+        if(is_null($item)) {
+            return [];
+        }
+
         return $this->normalize($item);
     }
 
@@ -36,6 +40,10 @@ abstract class BaseProvider
     protected function normalize(object|array $items): array
     {
         $normalized = array();
+
+        if(is_object($items)) {
+            return $items->toArray();
+        }
 
         foreach($items as $key => $item) {
             if(is_object($item)) {

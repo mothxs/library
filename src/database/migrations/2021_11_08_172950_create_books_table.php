@@ -18,11 +18,12 @@ class CreateBooksTable extends Migration
             $table->string('title');
             $table->string('isbn');
             $table->integer('pages');
+            $table->integer('qty');
+            $table->string('category')->nullable();
             $table->string('cover_type')->nullable();
             $table->string('copyright')->nullable();
             $table->string('publishing_place')->nullable();
             $table->date('release_date')->nullable();
-            $table->integer('qty');
             $table->string('photo')->nullable();
             $table->timestamps();
             $table->softDeletes();

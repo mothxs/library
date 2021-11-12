@@ -21,6 +21,12 @@ import createEditorials from '../pages/editorials/create-modal.vue';
 import editEditorials from '../pages/editorials/edit-modal.vue';
 import deleteEditorials from '../pages/editorials/delete-modal.vue';
 
+import partners from '../pages/partners/main.vue';
+import createPartners from '../pages/partners/create-modal.vue';
+import editPartners from '../pages/partners/edit-modal.vue';
+import deletePartners from '../pages/partners/delete-modal.vue';
+
+
 
 //Book page
 Vue.component('books', books);
@@ -39,6 +45,12 @@ Vue.component('editorials', editorials);
 Vue.component('create-editorial-modal', createEditorials);
 Vue.component('edit-editorial-modal', editEditorials);
 Vue.component('delete-editorial-modal', deleteEditorials);
+
+//Partners page
+Vue.component('partners', partners);
+Vue.component('create-partners-modal', createPartners);
+Vue.component('edit-partners-modal', editPartners);
+Vue.component('delete-partners-modal', deletePartners);
 
 new Vue({
     el: '#app'

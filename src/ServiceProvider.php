@@ -12,10 +12,10 @@ use Library\Repositories\BaseEloquentRepository;
 use Library\Repositories\BookEloquentRepository;
 use Library\Repositories\RentEloquentRepository;
 use Library\Repositories\UserEloquentRepository;
-use Library\Contracts\CategoryRepositoryInterface;
+use Library\Contracts\PartnerRepositoryInterface;
 use Library\Repositories\AuthorEloquentRepository;
 use Library\Contracts\EditorialRepositoryInterface;
-use Library\Repositories\CategoryEloquentRepository;
+use Library\Repositories\PartnerEloquentRepository;
 use Library\Repositories\EditorialEloquentRepository;
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 
@@ -49,7 +49,7 @@ class ServiceProvider extends BaseServiceProvider
         $this->app->bind(UserRepositoryInterface::class, UserEloquentRepository::class);
         $this->app->bind(BookRepositoryInterface::class, BookEloquentRepository::class);
         $this->app->bind(AuthorRepositoryInterface::class, AuthorEloquentRepository::class);
-        $this->app->bind(CategoryRepositoryInterface::class, CategoryEloquentRepository::class);
+        $this->app->bind(PartnerRepositoryInterface::class, PartnerEloquentRepository::class);
         $this->app->bind(EditorialRepositoryInterface::class, EditorialEloquentRepository::class);
         $this->app->bind(RentRepositoryInterface::class, RentEloquentRepository::class);
     }

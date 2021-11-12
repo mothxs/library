@@ -13,31 +13,26 @@
         <form action="">
           <div class="modal-card" style="width: 960">
             <header class="modal-card-head">
-              <p class="modal-card-title">Editar editorial</p>
+              <p class="modal-card-title">Editar socio</p>
               <button type="button" class="delete" @click="$emit('close')" />
             </header>
             <section class="modal-card-body">
               <div class="columns">
                 <div class="column">
                   <b-field label="Nombre" :type="getInputType('name')" :message="getErrorMessage('name')">
-                    <b-input v-model="editorial.name" required></b-input>
+                    <b-input v-model="partner.name" required></b-input>
                   </b-field>
-                  <b-field label="País" :type="getInputType('country')" :message="getErrorMessage('country')">
-                    <b-input v-model="editorial.country"></b-input>
+                  <b-field label="Apellido" :type="getInputType('surname')" :message="getErrorMessage('surname')">
+                    <b-input v-model="partner.surname"></b-input>
                   </b-field>
-                  <b-field label="Fecha de fundación" :type="getInputType('foundation_date')" :message="getErrorMessage('foundation_date')">
-                    <b-datepicker
-                      v-model="date"
-                      :show-week-number="true"
-                      locale="es-ES"
-                      placeholder="Click para seleccionar..."
-                      icon="calendar-today"
-                      trap-focus
-                    >
-                    </b-datepicker>
+                  <b-field label="DNI" :type="getInputType('id_card')" :message="getErrorMessage('id_card')">
+                    <b-input v-model="partner.id_card"></b-input>
                   </b-field>
-                  <b-field label="Página web" :type="getInputType('website')" :message="getErrorMessage('website')">
-                    <b-input v-model="editorial.website"></b-input>
+                  <b-field label="Edad" :type="getInputType('website')" :message="getErrorMessage('website')">
+                    <b-input v-model="partner.website" type="number" min="0"></b-input>
+                  </b-field>
+                  <b-field label="Dirección" :type="getInputType('address')" :message="getErrorMessage('address')">
+                    <b-input v-model="partner.address"></b-input>
                   </b-field>
                 </div>
               </div>
@@ -63,36 +58,32 @@ export default {
   data: function () {
     return {
       isLoading: false,
-      editorial: {},
+      partner: {},
       file: {},
       errors: [],
       date: undefined
     };
   },
   created() {
-    this.editorial = this.item;
-    if(this.editorial.foundation_date) {
-      this.date = new Date(this.editorial.foundation_date)
+    this.partner = this.item;
+    if(this.partner.foundation_date) {
+      this.date = new Date(this.partner.foundation_date)
     }
   },
   methods: {
     update() {
       this.$emit("loading", true);
 
-      if(this.date) {
-        this.editorial.foundation_date = this.formatDate(this.date)
-      }
-
-      axios.put("/api/editorials/"+this.editorial.id, this.editorial).then(response => {
+      axios.put("/api/partners/"+this.partner.id, this.partner).then(response => {
         this.$buefy.toast.open({
-            message: '¡Editorial actualizada con éxito!',
+            message: '¡Socio actualizado con éxito!',
             type: 'is-success'
         })
         this.$emit('updated', response.data);
       })
       .catch(error => {
         this.$buefy.toast.open({
-            message: 'Error al actualizar la editorial',
+            message: 'Error al actualizar el socio',
             type: 'is-danger'
         })
 
@@ -115,19 +106,6 @@ export default {
         return this.errors[input][0];
       }
       return '';
-    },
-    formatDate(date) {
-      var d = new Date(date),
-          month = '' + (d.getMonth() + 1),
-          day = '' + d.getDate(),
-          year = d.getFullYear();
-
-      if (month.length < 2) 
-          month = '0' + month;
-      if (day.length < 2) 
-          day = '0' + day;
-
-      return [year, month, day].join('-');
     }
   },
 };

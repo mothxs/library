@@ -20,6 +20,12 @@
                 </span>
                 <a href="/library/editorials" class="library-menu-link {{ $view == 'editorials'? 'library-is-active' : ''}}">Editoriales</a>
             </li>
+            <li class="library-menu-item">
+                <span class="library-icon material-icons">
+                    groups
+                </span>
+                <a href="/library/partners" class="library-menu-link {{ $view == 'partners'? 'library-is-active' : ''}}">Socios</a>
+            </li>
         </ul>
     </div>
     <div class="library-profile">

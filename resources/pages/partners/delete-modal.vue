@@ -13,7 +13,7 @@
         <form action="">
           <div class="modal-card" style="width: 960">
             <header class="modal-card-head">
-              <p class="modal-card-title">Archivar editorial</p>
+              <p class="modal-card-title">Archivar socio</p>
               <button type="button" class="delete" @click="$emit('close')" />
             </header>
             <section class="modal-card-body">
@@ -41,26 +41,26 @@ export default {
   data: function () {
     return {
       isLoading: false,
-      editorial: {}
+      partner: {}
     };
   },
   created() {
-    this.editorial = this.item;
+    this.partner = this.item;
   },
   methods: {
     destroy() {
       this.$emit("loading", true);
 
-      axios.delete("/api/editorials/"+this.editorial.id).then(response => {
+      axios.delete("/api/partners/"+this.partner.id).then(response => {
         this.$buefy.toast.open({
-            message: '¡Editorial archivada con éxito!',
+            message: '¡Socio archivado con éxito!',
             type: 'is-success'
         })
         this.$emit('deleted');
       })
       .catch(error => {
         this.$buefy.toast.open({
-            message: 'Error al archivar la editorial',
+            message: 'Error al archivar el socio',
             type: 'is-danger'
         })
       })

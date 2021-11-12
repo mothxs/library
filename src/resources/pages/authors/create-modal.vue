@@ -68,21 +68,7 @@ export default {
       date: undefined
     };
   },
-  created() {
-    this.load()
-  },
   methods: {
-    load() {
-      this.$emit("loading", true);
-      axios.get("/api/authors").then((response) => {
-        this.authors = response.data
-      })
-      .catch((error) => {
-      })
-      .finally(() => {
-        this.$emit("loading", false)
-      });
-    },
     create() {
       this.$emit("loading", true);
 

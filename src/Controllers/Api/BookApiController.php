@@ -12,12 +12,14 @@ class BookApiController extends BaseApiController
         'title'            => 'required|string',
         'isbn'             => 'required|string',
         'pages'            => 'required|integer',
+        'author_id'        => 'required|integer|exists:authors,id',
+        'editorial_id'     => 'required|integer|exists:editorials,id',
         'category'         => 'nullable|string',
         'cover_type'       => 'nullable|string',
         'copyright'        => 'nullable|string',
         'publishing_place' => 'nullable|string',
         'release_date'     => 'nullable|date_format:Y-m-d',
-        'qty'              => 'required|integer',
+        'qty'              => 'required|integer|min:0',
         'photo'            => 'nullable|string'
     ];
 
@@ -25,12 +27,14 @@ class BookApiController extends BaseApiController
         'title'            => 'required|string',
         'isbn'             => 'required|string',
         'pages'            => 'required|integer',
+        'author_id'        => 'required|integer|exists:authors,id',
+        'editorial_id'     => 'required|integer|exists:editorials,id',
         'category'         => 'nullable|string',
         'cover_type'       => 'nullable|string',
         'copyright'        => 'nullable|string',
         'publishing_place' => 'nullable|string',
         'release_date'     => 'nullable|date_format:Y-m-d',
-        'qty'              => 'required|integer',
+        'qty'              => 'required|integer|min:0',
         'photo'            => 'nullable|string'
     ];
 

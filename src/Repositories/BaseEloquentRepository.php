@@ -51,7 +51,7 @@ abstract class BaseEloquentRepository implements BaseRepositoryInterface
             return false;
         }
         
-        return $item;
+        return $item->fresh();
     }
 
     /**
@@ -72,7 +72,7 @@ abstract class BaseEloquentRepository implements BaseRepositoryInterface
         $item->fill($data);
         $item->save();
 
-        return $item;
+        return $item->fresh();
     }
 
     /**

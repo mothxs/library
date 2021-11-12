@@ -13,7 +13,7 @@ class EditorialModel extends BaseModel
     ];
 
      /**
-     * Get the books for the blog post.
+     * Get the books.
      */
     public function books()
     {

@@ -1,5 +1,5 @@
 <div class="library-sidebar">
-    <div class="library-app-title">BIBLIOTECA</div>
+    {{-- <div class="library-app-title">BIBLIOTECA</div> --}}
     <div class="library-menu-list">
         <ul>
             <li class="library-menu-item">
@@ -25,6 +25,12 @@
                     groups
                 </span>
                 <a href="/library/partners" class="library-menu-link {{ $view == 'partners'? 'library-is-active' : ''}}">Socios</a>
+            </li>
+            <li class="library-menu-item">
+                <span class="library-icon material-icons">
+                    list_alt
+                </span>
+                <a href="/library/rents" class="library-menu-link {{ $view == 'rents'? 'library-is-active' : ''}}">Alquileres</a>
             </li>
         </ul>
     </div>

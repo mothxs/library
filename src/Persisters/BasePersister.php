@@ -14,6 +14,50 @@ abstract class BasePersister
     protected $repo;
 
     /**
+     * Validates wheter data can be created
+     * 
+     * @param aray $data
+     * @return bool
+     */
+    protected function canBeCreated(array $data): bool
+    {
+        return true;
+    }
+
+    /**
+     * Validates wheter data can be updated
+     * 
+     * @param aray $data
+     * @return bool
+     */
+    protected function canBeUpdated(array $data): bool
+    {
+        return true;
+    }
+
+    /**
+     * Validates wheter data can be deleted
+     * 
+     * @param aray $data
+     * @return bool
+     */
+    protected function canBeDeleted(int $id): bool
+    {
+        return true;
+    }
+
+    /**
+     * Validates wheter data can be archived
+     * 
+     * @param aray $data
+     * @return bool
+     */
+    protected function canBeArchived(int $id): bool
+    {
+        return true;
+    }
+
+    /**
      * Inserts the given data in the storage
      * 
      * @param array $data
@@ -21,6 +65,10 @@ abstract class BasePersister
      */
     public function insert(array $data): bool|array
     {
+        if(!$this->canBeCreated($data)) {
+            return false;
+        }
+
         $item = $this->repo->create($data);
 
         if(!$item) {
@@ -39,6 +87,10 @@ abstract class BasePersister
      */
     public function update(int $id, array $data): bool|array
     {
+        if(!$this->canBeUpdated($data)) {
+            return false;
+        }
+
         $item = $this->repo->update($id, $data);
 
         if(!$item) {
@@ -56,6 +108,10 @@ abstract class BasePersister
      */
     public function delete(int $id): bool
     {
+        if(!$this->canBeDeleted($id)) {
+            return false;
+        }
+
         return $this->repo->delete($id);
     }
     
@@ -67,6 +123,10 @@ abstract class BasePersister
      */
     public function archive(int $id): bool
     {
+        if(!$this->canBeArchived($id)) {
+            return false;
+        }
+        
         return $this->repo->archive($id);
     }
 

@@ -13,14 +13,14 @@
         <form action="">
           <div class="modal-card" style="width: 960">
             <header class="modal-card-head">
-              <p class="modal-card-title">Archivar libro</p>
+              <p class="modal-card-title">Devolver libros</p>
               <button type="button" class="delete" @click="$emit('close')" />
             </header>
             <section class="modal-card-body">
-              <p>¿Estás seguro?</p>
+              <p><b>Volveran a estar disponibles en el stock.</b>¿Estás seguro?</p>
             </section>
             <footer class="modal-card-foot">
-              <b-button label="Archivar" type="is-danger" @click="destroy"/>
+              <b-button label="Devolver" type="is-success" @click="destroy"/>
               <b-button label="Cerrar" @click="$emit('close')"/>
             </footer>
           </div>
@@ -41,26 +41,26 @@ export default {
   data: function () {
     return {
       isLoading: false,
-      author: {}
+      rent: {}
     };
   },
   created() {
-    this.author = this.item;
+    this.rent = this.item;
   },
   methods: {
     destroy() {
       this.$emit("loading", true);
 
-      axios.delete("/api/books/"+this.author.id).then(response => {
+      axios.delete("/api/rents/"+this.rent.id).then(response => {
         this.$buefy.toast.open({
-            message: '¡Libro archivado con éxito!',
+            message: '¡Alquiler devuelto con éxito!',
             type: 'is-success'
         })
         this.$emit('deleted');
       })
       .catch(error => {
         this.$buefy.toast.open({
-            message: 'Error al archivar el libro',
+            message: 'Error al realizar la devolución',
             type: 'is-danger'
         })
       })

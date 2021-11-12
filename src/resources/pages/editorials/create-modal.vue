@@ -13,7 +13,7 @@
         <form action="">
           <div class="modal-card" style="width: 960">
             <header class="modal-card-head">
-              <p class="modal-card-title">Nueva editorial</p>
+              <p class="modal-card-title">Nuevo editorial</p>
               <button type="button" class="delete" @click="$emit('close')" />
             </header>
             <section class="modal-card-body">
@@ -65,21 +65,7 @@ export default {
       date: undefined
     };
   },
-  created() {
-    this.load()
-  },
   methods: {
-    load() {
-      this.$emit("loading", true);
-      axios.get("/api/editorials").then((response) => {
-        this.editorials = response.data
-      })
-      .catch((error) => {
-      })
-      .finally(() => {
-        this.$emit("loading", false)
-      });
-    },
     create() {
       this.$emit("loading", true);
 

@@ -17,7 +17,7 @@
               <button type="button" class="delete" @click="$emit('close')" />
             </header>
             <section class="modal-card-body">
-              <p>¿Estas seguro?</p>
+              <p>¿Estás seguro?</p>
             </section>
             <footer class="modal-card-foot">
               <b-button label="Archivar" type="is-danger" @click="destroy"/>

@@ -14,7 +14,7 @@ class BookModel extends BaseModel
     ];
 
     /**
-     * Get the authors for the blog post.
+     * Get the authors.
      */
     public function authors()
     {
@@ -22,7 +22,7 @@ class BookModel extends BaseModel
     }
 
     /**
-     * Get the editorials for the blog post.
+     * Get the editorials.
      */
     public function editorials()
     {
@@ -30,7 +30,7 @@ class BookModel extends BaseModel
     }
 
     /**
-     * Get the categories for the blog post.
+     * Get the categories.
      */
     public function categories()
     {
@@ -38,7 +38,7 @@ class BookModel extends BaseModel
     }
 
     /**
-     * Get the rents for the blog post.
+     * Get the rents.
      */
     public function rents()
     {

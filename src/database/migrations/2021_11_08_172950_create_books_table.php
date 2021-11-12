@@ -19,6 +19,10 @@ class CreateBooksTable extends Migration
             $table->string('isbn');
             $table->integer('pages');
             $table->integer('qty');
+            $table->unsignedBigInteger('author_id');
+            $table->foreign('author_id')->references('id')->on('authors')->onUpdate('cascade')->onDelete('cascade');
+            $table->unsignedBigInteger('editorial_id');
+            $table->foreign('editorial_id')->references('id')->on('editorials')->onUpdate('cascade')->onDelete('cascade');
             $table->string('category')->nullable();
             $table->string('cover_type')->nullable();
             $table->string('copyright')->nullable();

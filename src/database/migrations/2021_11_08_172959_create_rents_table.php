@@ -16,10 +16,12 @@ class CreateRentsTable extends Migration
         Schema::create('rents', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('book_id');
-            $table->foreign('book_id')->references('id')->on('books');
+            $table->foreign('book_id')->references('id')->on('books')->onUpdate('cascade')->onDelete('restrict');
             $table->unsignedBigInteger('partner_id');
-            $table->foreign('partner_id')->references('id')->on('partners');
-            $table->date('expiration_date');
+            $table->foreign('partner_id')->references('id')->on('partners')->onUpdate('cascade')->onDelete('restrict');
+            $table->integer('qty');
+            $table->date('start_date');
+            $table->date('end_date');
             $table->integer('times_extended')->default(0);
             $table->timestamps();
             $table->softDeletes();

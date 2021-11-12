@@ -11,4 +11,12 @@ class PartnerModel extends BaseModel
     protected $fillable = [ 
         'name', 'surname', 'id_card', 'age', 'address',
     ];
+
+    /**
+     * Get the rents.
+     */
+    public function rents()
+    {
+        return $this->hasMany(RentModel::class, 'partner_id');
+    }
 }

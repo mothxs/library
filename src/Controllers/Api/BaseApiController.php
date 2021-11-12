@@ -50,8 +50,8 @@ class BaseApiController extends Controller
         try {
             $data = $this->provider->all();
         } catch(Exception $e) {
-            Log::warning('Error listing the resources. '.$e->getMessage());
-            return response()->json(['error' => 'Error listing the resources.']);
+            Log::error('Error listing the resources. '.$e->getMessage());
+            return response()->json(['error' => 'Error listing the resources.'], 500);
         }
 
         return response()->json($data);
@@ -70,8 +70,8 @@ class BaseApiController extends Controller
         try {
             $item = $this->persister->insert($validatedData);
         } catch(Exception $e) {
-            Log::warning('Error creating a new resource. '.$e->getMessage());
-            return response()->json(['error' => 'Error creating a new resource.']);
+            Log::error('Error creating a new resource. '.$e->getMessage());
+            return response()->json(['error' => 'Error creating a new resource.'], 500);
         }
 
         if(!$item) {
@@ -92,8 +92,8 @@ class BaseApiController extends Controller
         try {
             $item = $this->provider->find($id);
         } catch(Exception $e) {
-            Log::warning('Error finding the resource with the id '.$id.'. '.$e->getMessage());
-            return response()->json(['error' => 'Error finding the resource with the id '.$id.'.']);
+            Log::error('Error finding the resource with the id '.$id.'. '.$e->getMessage());
+            return response()->json(['error' => 'Error finding the resource with the id '.$id.'.'], 500);
         }
 
         if(empty($item)) {
@@ -117,8 +117,8 @@ class BaseApiController extends Controller
         try {
             $item = $this->persister->update($id, $validatedData);
         } catch(Exception $e) {
-            Log::warning('Error updating the resource with the id '.$id.'. '.$e->getMessage());
-            return response()->json(['error' => 'Error updating the resource with the id '.$id.'.']);
+            Log::error('Error updating the resource with the id '.$id.'. '.$e->getMessage());
+            return response()->json(['error' => 'Error updating the resource with the id '.$id.'.'], 500);
         }
 
         if(empty($item)) {
@@ -139,7 +139,7 @@ class BaseApiController extends Controller
         try {
             $deleted = $this->persister->archive($id);
         } catch(Exception $e) {
-            Log::warning('Error deleting the resource with the id '.$id.'. '.$e->getMessage());
+            Log::error('Error deleting the resource with the id '.$id.'. '.$e->getMessage());
             return response()->json(['error' => 'Error deleting the resource with the id '.$id.'.']);
         }
 

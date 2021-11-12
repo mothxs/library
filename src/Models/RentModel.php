@@ -2,25 +2,54 @@
 
 namespace Library\Models;
 
+use Library\Events\RentCreated;
+use Library\Events\RentDeleted;
 use Library\Models\BaseModel;
 
 class RentModel extends BaseModel
 {
     protected $table = 'rents';
 
+    protected $fillable = [
+        'book_id', 'partner_id', 'start_date', 'end_date', 'qty', 'times_extended',
+    ];
+
     /**
-     * Get the user that owns the comment.
+     * The "booted" method of the model.
+     *
+     * @return void
      */
-    public function user()
+    protected static function booted()
     {
-        return $this->belongsTo(UserModel::class, 'user_id');
+        static::created(function ($model) {
+            event(new RentCreated($model));
+        });
+
+        static::deleted(function ($model) {
+            event(new RentDeleted($model));
+        });
     }
 
     /**
-     * Get the book that owns the comment.
+     * The relationships that should always be loaded.
+     *
+     * @var array
+     */
+    protected $with = ['book', 'partner'];
+
+    /**
+     * Get the rented book.
      */
     public function book()
     {
         return $this->belongsTo(BookModel::class, 'book_id');
+    }
+
+    /**
+     * Get the partner who rented the book.
+     */
+    public function partner()
+    {
+        return $this->belongsTo(PartnerModel::class, 'partner_id');
     }
 }

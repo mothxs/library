@@ -8,7 +8,7 @@
         type="is-success is-pulled-right"
         icon-left="plus"
         >
-        Nueva
+        Nuevo
       </b-button
       >
     </div>
@@ -50,26 +50,26 @@
         </template>
       </b-table>
     </div>
-    <create-partners-modal 
+    <create-partner-modal 
       v-if="showNewModal" 
       @close="showNewModal = !showNewModal"
       @created="addNewItem($event)"
       @loading="isLoading = $event.value">
-    </create-partners-modal>
-    <edit-partners-modal 
+    </create-partner-modal>
+    <edit-partner-modal 
       v-if="showEditModal" 
       @close="showEditModal = !showEditModal"
       @updated="editItem($event)"
       @loading="isLoading = $event.value"
       :item="selectedItem">
-    </edit-partners-modal>
-    <delete-partners-modal 
+    </edit-partner-modal>
+    <delete-partner-modal 
       v-if="showDeleteModal" 
       @close="showDeleteModal = !showDeleteModal"
       @deleted="remove($event)"
       @loading="isLoading = $event.value"
       :item="selectedItem">
-    </delete-partners-modal>
+    </delete-partner-modal>
   </section>
 </template>
 

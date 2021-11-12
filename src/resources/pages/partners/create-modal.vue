@@ -55,26 +55,10 @@ export default {
       isLoading: false,
       partner: {},
       partners: [],
-      file: {},
-      errors: [],
-      date: undefined
+      errors: []
     };
   },
-  created() {
-    this.load()
-  },
   methods: {
-    load() {
-      this.$emit("loading", true);
-      axios.get("/api/partners").then((response) => {
-        this.partners = response.data
-      })
-      .catch((error) => {
-      })
-      .finally(() => {
-        this.$emit("loading", false)
-      });
-    },
     create() {
       this.$emit("loading", true);
 

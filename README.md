@@ -1,7 +1,6 @@
 # Library project
 
 ## Installation
-<br>
 
 #### IMPORTANT
 
@@ -36,13 +35,17 @@ Execute migrations:
 
     vendor/bin/sail artisan migrate
 
+Add link to storage folder:
+
+    vendor/bin/sail artisan storage:link
+
 Create a new user:
 
     vendor/bin/sail artisan library:createuser joe joe@doe.com secret
 
 Now, you should be able to go to <code>http://localhost/</code> and see the app.
 
-For the login use the user configured above. The email is **joe@doe.com** and the password is **secret**.
+For the login, use the user configured above. The default email is **joe@doe.com** and the password is **secret**.
 
 <hr>
 

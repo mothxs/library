@@ -3,10 +3,13 @@
 namespace Library\Models;
 
 use App\Models\User;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Hash;
 
 class UserModel extends User
 {
+    use SoftDeletes;
+    
     protected $table = 'users';
     protected $casts = [
         'created_at' => 'datetime:Y-m-d h:m:s',

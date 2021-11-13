@@ -12,7 +12,7 @@ class CreateUser extends Command
      *
      * @var string
      */
-    protected $signature = 'library:createuser';
+    protected $signature = 'library:createuser {name?} {email?} {password?}';
 
     /**
      * The console command description.
@@ -39,6 +39,15 @@ class CreateUser extends Command
      */
     public function handle()
     {
+        if( null != $this->argument('name') and null != $this->argument('email') and null != $this->argument('password')) {
+            $this->userPersister->insert([
+                'name' => $this->argument('name'),
+                'email' => $this->argument('email'),
+                'password' => $this->argument('password')
+            ]);
+            return Command::SUCCESS;
+        }
+
         $name = $this->ask('Type the user name');
         $email = $this->ask('Type the user email');
         $password = $this->secret('Type the user password');

@@ -11,4 +11,15 @@ class UserPersister extends BasePersister
     {
         $this->repo = $repo;
     }
+    
+    protected function canBeCreated(array $data): bool
+    {
+        $exists = $this->repo->findByEmail($data['email']);
+
+        if(!is_null($exists)) {
+            return false;
+        }
+
+        return true;
+    }
 }

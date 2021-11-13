@@ -21,13 +21,15 @@ Configure environment copying the example one:
 
     cp .env.example .env
 
-Start docker containers:
+Start docker containers and wait until everything is up(~2-3 min first time):
 
     vendor/bin/sail up
 
 Or start it as a daemon:
 
     vendor/bin/sail up -d
+
+### After docker is configured, open a new tab if it is not started as daemon and execute the following:
 
 Generate an encryption key for the app:
 

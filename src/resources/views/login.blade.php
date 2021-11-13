@@ -15,6 +15,9 @@
         <h2 class="card-title">LOGIN</h2>
         <form class="form" method="POST" action="/login">
             @csrf
+            @error('email')
+                <p class="credentials-error">{{ $message }}</p>
+            @enderror
             <div class="section">
                 <label for="email">Email</label>
                 <input id="email" name="email" class="input" type="text" required autocomplete="on">

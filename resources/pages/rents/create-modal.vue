@@ -28,6 +28,7 @@
                       icon="calendar-today"
                       trap-focus
                       :min-date="new Date(new Date().getFullYear(), new Date().getMonth() , new Date().getDate())"
+                      append-to-body
                     >
                     </b-datepicker>
                   </b-field>
@@ -41,6 +42,7 @@
                       icon="calendar-today"
                       trap-focus
                       :min-date="new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate())"
+                      append-to-body
                     >
                     </b-datepicker>
                   </b-field>

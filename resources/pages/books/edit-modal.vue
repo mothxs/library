@@ -75,6 +75,7 @@
                       placeholder="Click para seleccionar..."
                       icon="calendar-today"
                       trap-focus
+                      append-to-body
                     >
                     </b-datepicker>
                   </b-field>

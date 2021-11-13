@@ -11,4 +11,19 @@ class AuthorPersister extends BasePersister
     {
         $this->repo = $repo;
     }
+
+    protected function canBeDeleted(int $id): bool
+    {
+        $author = $this->repo->find($id);
+
+        if(!$author) {
+            return false;
+        }
+
+        if(count($author->books) > 0) {
+            return false;
+        }
+
+        return true;
+    }
 }

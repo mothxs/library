@@ -48,7 +48,7 @@
             <b-button icon-left="keyboard-return" type="is-success" @click="showReturn(props.row)">
             </b-button>
           </b-tooltip>
-          <b-tooltip label="Extender" position="is-top" type="is-dark">
+          <b-tooltip label="Extender" position="is-top" type="is-dark" v-show="isExtendVisible(props.row)">
             <b-button icon-left="clock-outline" type="is-dark" @click="showExtend(props.row)">
             </b-button>
           </b-tooltip>
@@ -169,6 +169,18 @@ export default {
       }
 
       return '';
+    },
+    isExtendVisible(item) {
+      if(this.today >= new Date(item.end_date)) {
+        return true;
+      }
+
+      let milisecondDiff = this.today - new Date(item.end_date)
+      if(milisecondDiff / (1000 * 60 * 60 * 24) >= -5) {
+        return true;
+      }
+
+      return false;
     }
   },
 };

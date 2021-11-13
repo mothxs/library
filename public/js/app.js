@@ -5003,6 +5003,19 @@ __webpack_require__.r(__webpack_exports__);
       }
 
       return '';
+    },
+    isExtendVisible: function isExtendVisible(item) {
+      if (this.today >= new Date(item.end_date)) {
+        return true;
+      }
+
+      var milisecondDiff = this.today - new Date(item.end_date);
+
+      if (milisecondDiff / (1000 * 60 * 60 * 24) >= -5) {
+        return true;
+      }
+
+      return false;
     }
   }
 });
@@ -48054,6 +48067,14 @@ var render = function () {
                         _c(
                           "b-tooltip",
                           {
+                            directives: [
+                              {
+                                name: "show",
+                                rawName: "v-show",
+                                value: _vm.isExtendVisible(props.row),
+                                expression: "isExtendVisible(props.row)",
+                              },
+                            ],
                             attrs: {
                               label: "Extender",
                               position: "is-top",

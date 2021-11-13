@@ -39,7 +39,9 @@
             <span class="library-icon material-icons">
                 account_circle
             </span>
-            <span class="library-user-name">{{ucfirst(Auth::user()->name)}}</span>
+            @if(Auth::user())
+                <span class="library-user-name">{{ucfirst(Auth::user()->name)}}</span>
+            <@endif
             <a class="library-logout" href="/logout">
                 <span class="library-icon material-icons">
                     logout

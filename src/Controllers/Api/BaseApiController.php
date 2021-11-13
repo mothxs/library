@@ -75,7 +75,7 @@ class BaseApiController extends Controller
         }
 
         if(!$item) {
-            return response()->json($item, 422);
+            return response()->json([], 422);
         }
 
         return response()->json($item, 201);

@@ -19,11 +19,11 @@
         :mobile-cards="true"
         :row-class="(row,index) => this.getRowClass(row,index)"
       >
-        <b-table-column field="partner_name" label="Socio" v-slot="props" sortable searchable>
+        <b-table-column field="partner.name" label="Socio" v-slot="props" sortable searchable>
           {{ props.row.partner.name }}
         </b-table-column>
 
-        <b-table-column field="book_name" label="Libro" v-slot="props" sortable searchable>
+        <b-table-column field="book.title" label="Libro" v-slot="props" sortable searchable>
           {{ props.row.book.title }}
         </b-table-column>
 
@@ -49,7 +49,7 @@
             </b-button>
           </b-tooltip>
           <b-tooltip label="Extender" position="is-top" type="is-dark">
-            <b-button icon-left="clock-outline" type="is-warning" @click="showExtend(props.row)">
+            <b-button icon-left="clock-outline" type="is-dark" @click="showExtend(props.row)">
             </b-button>
           </b-tooltip>
         </b-table-column>
@@ -144,8 +144,9 @@ export default {
       this.selectedItem = item;
       this.showExtendModal = true;
     },
-    editItem(editemItem) {
-      this.selectedItem = editemItem;
+    editItem(editedItem) {
+      const index = this.data.findIndex(item => item.id == this.selectedItem.id);
+      this.$set(this.data, index, editedItem);
       this.showExtendModal = false
     },
     showReturn(item) {

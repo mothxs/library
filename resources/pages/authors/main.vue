@@ -115,8 +115,9 @@ export default {
       this.showEditModal = true;
     },
     editItem(editedItem) {
-      this.selectedItem = editedItem;
-      this.showEditModal = false;
+      const index = this.data.findIndex(item => item.id == this.selectedItem.id);
+      this.$set(this.data, index, editedItem);
+      this.showEditModal = false
     },
     showDelete(item) {
       this.selectedItem = item;

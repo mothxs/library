@@ -53,6 +53,10 @@
                 <div class="media-content">
                     <div class="content">
                         <p>
+                          Autor: {{ props.row.author.name }}
+                          <br>
+                          Editorial: {{ props.row.editorial.name }}
+                          <br>
                           Tipo de tapa: {{ props.row.cover_type }}
                           <br>
                           Copyright: {{ props.row.copyright }}
@@ -75,14 +79,18 @@
       v-if="showNewModal" 
       @close="showNewModal = !showNewModal"
       @created="addNewItem($event)"
-      @loading="isLoading = $event.value">
+      @loading="isLoading = $event.value"
+      :authors="authors"
+      :editorials="editorials">
     </create-book-modal>
     <edit-book-modal 
       v-if="showEditModal" 
       @close="showEditModal = !showEditModal"
       @updated="editItem($event)"
       @loading="isLoading = $event.value"
-      :item="selectedItem">
+      :item="selectedItem"
+      :authors="authors"
+      :editorials="editorials">
     </edit-book-modal>
     <delete-book-modal 
       v-if="showDeleteModal" 
@@ -100,6 +108,8 @@ export default {
     return {
       isLoading: false,
       data: [],
+      authors: [],
+      editorials: [],
       showNewModal: false,
       showEditModal: false,
       showDeleteModal: false,
@@ -126,6 +136,33 @@ export default {
         .finally(() => {
           this.isLoading = false
         });
+
+      axios
+        .get("/api/authors")
+        .then(response => {
+          this.authors = response.data;
+        })
+        .catch(error => {
+          this.$buefy.toast.open({
+            message: 'Error al cargar los autores',
+            type: 'is-danger'
+          })
+        })
+        .finally(() => {
+        });
+      axios
+        .get("/api/editorials")
+        .then(response => {
+          this.editorials = response.data;
+        })
+        .catch(error => {
+          this.$buefy.toast.open({
+            message: 'Error al cargar las ditoriales',
+            type: 'is-danger'
+          })
+        })
+        .finally(() => {
+        });
     },
     addNewItem(newItem) {
       this.data.push(newItem)
@@ -135,8 +172,9 @@ export default {
       this.selectedItem = item;
       this.showEditModal = true;
     },
-    editItem(editemItem) {
-      this.selectedItem = editemItem;
+    editItem(editedItem) {
+      const index = this.data.findIndex(item => item.id == this.selectedItem.id);
+      this.$set(this.data, index, editedItem);
       this.showEditModal = false
     },
     showDelete(item) {

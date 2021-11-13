@@ -9,7 +9,7 @@ class PartnerModel extends BaseModel
     protected $table = 'partners';
 
     protected $fillable = [ 
-        'name', 'surname', 'id_card', 'age', 'address',
+        'name', 'surname', 'id_card', 'birth_date', 'address',
     ];
 
     /**

@@ -9,24 +9,24 @@ class BookModel extends BaseModel
     protected $table = 'books';
 
     protected $fillable = [ 
-        'title', 'isbn', 'pages', 'cover_type', 'category',
+        'title', 'isbn', 'pages', 'cover_type', 'category', 'author_id', 'editorial_id',
         'copyright', 'publishing_place', 'release_date', 'qty', 'photo'
     ];
 
     /**
      * Get the authors.
      */
-    public function authors()
+    public function author()
     {
-        return $this->belongsToMany(AuthorModel::class, 'author_book', 'book_id', 'author_id');
+        return $this->belongsTo(AuthorModel::class, 'author_id');
     }
 
     /**
      * Get the editorials.
      */
-    public function editorials()
+    public function editorial()
     {
-        return $this->belongsToMany(EditorialModel::class, 'editorial_book', 'book_id', 'editorial_id');
+        return $this->belongsTo(EditorialModel::class, 'editorial_id');
     }
 
     /**

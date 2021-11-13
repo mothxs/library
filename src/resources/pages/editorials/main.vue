@@ -31,7 +31,11 @@
         </b-table-column>
 
         <b-table-column field="website" label="Página web" v-slot="props" sortable searchable>
-          <a v-if="props.row.website">{{ props.row.website }}</a>
+          <a v-if="props.row.website" :href="props.row.website" target="_blank">{{ props.row.website }}</a>
+        </b-table-column>
+
+        <b-table-column label="Nº de libros" v-slot="props" sortable>
+          {{ props.row.books? (props.row.books.length) : 0 }}
         </b-table-column>
 
         <b-table-column v-slot="props">
@@ -110,8 +114,9 @@ export default {
       this.selectedItem = item;
       this.showEditModal = true;
     },
-    editItem(editemItem) {
-      this.selectedItem = editemItem;
+    editItem(editedItem) {
+      const index = this.data.findIndex(item => item.id == this.selectedItem.id);
+      this.$set(this.data, index, editedItem);
       this.showEditModal = false
     },
     showDelete(item) {

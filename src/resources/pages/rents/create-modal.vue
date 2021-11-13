@@ -126,6 +126,15 @@ export default {
   },
   methods: {
     create() {
+      
+      if(this.selectedBook.qty < this.rent.qty) {
+        this.$buefy.toast.open({
+            message: 'La cantidad del alquiler supera al stock del libro',
+            type: 'is-danger'
+        });
+        return false;
+      }
+
       this.$emit("loading", true);
 
       if(this.startDate) {

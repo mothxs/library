@@ -17,8 +17,8 @@ class CreatePartnersTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('surname');
-            $table->string('id_card')->unique();
-            $table->integer('age')->nullable();
+            $table->string('id_card');
+            $table->date('birth_date')->nullable();
             $table->string('address');
             $table->timestamps();
             $table->softDeletes();

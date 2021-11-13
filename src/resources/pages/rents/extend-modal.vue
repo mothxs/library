@@ -51,13 +51,13 @@ export default {
     update() {
       this.$emit("loading", true);
 
-      this.rent.times_extended += 1;
       let date = new Date(this.rent.end_date);
       //Add 7 days to the end_date
       date.setDate(date.getDate() + 7);
-      this.rent.end_date = this.formatDate(date);
 
-      axios.put("/api/rents/"+this.rent.id, this.rent).then(response => {
+      axios
+      .put("/api/rents/"+this.rent.id, {end_date: this.formatDate(date), times_extended: this.rent.times_extended + 1})
+      .then(response => {
         this.$buefy.toast.open({
             message: '¡Alquiler extendido con éxito!',
             type: 'is-success'

@@ -13,10 +13,24 @@ class AuthorModel extends BaseModel
     ];
 
     /**
+     * The "booted" method of the model.
+     *
+     * @return void
+     */
+    protected static function booted()
+    {
+        static::deleting(function ($author) {
+            if(count($author->books) > 0) {
+                return false;
+            }
+        });
+    }
+
+    /**
      * Get the books.
      */
     public function books()
     {
-        return $this->belongsToMany(BookModel::class, 'author_book', 'author_id', 'book_id');
+        return $this->hasMany(BookModel::class, 'author_id');
     }
 }

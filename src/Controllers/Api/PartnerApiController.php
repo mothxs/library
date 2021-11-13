@@ -10,19 +10,19 @@ use Library\Controllers\Api\BaseApiController;
 class PartnerApiController extends BaseApiController
 {
     protected $createValidationRules = [
-        'name'      => 'required|string',
-        'surname'   => 'required|string',
-        'id_card'   => 'required|string|unique:partners',
-        'age'       => 'nullable|string',
-        'address'   => 'nullable|string',
+        'name'       => 'required|string',
+        'surname'    => 'required|string',
+        'id_card'    => 'required|string|size:9|unique:partners',
+        'birth_date' => 'nullable|date_format:Y-m-d',
+        'address'    => 'required|string',
     ];
 
     protected $updateValidationRules = [
-        'name'      => 'required|string',
-        'surname'   => 'required|string',
-        'id_card'   => 'required|string|unique:partners,id_card',
-        'age'       => 'nullable|string',
-        'address'   => 'nullable|string',
+        'name'       => 'required|string',
+        'surname'    => 'required|string',
+        'id_card'    => 'required|string|size:9|unique:partners,id_card',
+        'birth_date' => 'nullable|date_format:Y-m-d',
+        'address'    => 'required|string',
     ];
 
     public function __construct(

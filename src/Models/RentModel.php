@@ -31,13 +31,6 @@ class RentModel extends BaseModel
     }
 
     /**
-     * The relationships that should always be loaded.
-     *
-     * @var array
-     */
-    protected $with = ['book', 'partner'];
-
-    /**
      * Get the rented book.
      */
     public function book()

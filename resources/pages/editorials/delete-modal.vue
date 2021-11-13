@@ -49,6 +49,15 @@ export default {
   },
   methods: {
     destroy() {
+
+      if(this.editorial.books && this.editorial.books.length > 0) {
+        this.$buefy.toast.open({
+          message: 'La editorial tiene libros',
+          type: 'is-danger'
+        });
+        return false;
+      }
+
       this.$emit("loading", true);
 
       axios.delete("/api/editorials/"+this.editorial.id).then(response => {

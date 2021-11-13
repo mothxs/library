@@ -12,7 +12,7 @@ use Library\Controllers\Api\BaseApiController;
 class EditorialApiController extends BaseApiController
 {
     protected $createValidationRules = [
-        'name'            => 'required|string|unique:editorials',
+        'name'            => 'required|string|unique:editorials,name,NULL,id,deleted_at,NULL',
         'country'         => 'required|string',
         'foundation_date' => 'nullable|date_format:Y-m-d',
         'website'         => 'nullable|string',

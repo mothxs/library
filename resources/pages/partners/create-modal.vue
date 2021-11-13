@@ -26,10 +26,18 @@
                     <b-input v-model="partner.surname"></b-input>
                   </b-field>
                   <b-field label="DNI" :type="getInputType('id_card')" :message="getErrorMessage('id_card')">
-                    <b-input v-model="partner.id_card"></b-input>
+                    <b-input v-model="partner.id_card" maxlength="9"></b-input>
                   </b-field>
-                  <b-field label="Edad" :type="getInputType('website')" :message="getErrorMessage('website')">
-                    <b-input v-model="partner.website" type="number" min="0"></b-input>
+                  <b-field label="Fecha de nacimiento" :type="getInputType('birth_date')" :message="getErrorMessage('birth_date')">
+                    <b-datepicker
+                      v-model="date"
+                      :show-week-number="true"
+                      locale="es-ES"
+                      placeholder="Click para seleccionar..."
+                      icon="calendar-today"
+                      trap-focus
+                    >
+                    </b-datepicker>
                   </b-field>
                   <b-field label="Dirección" :type="getInputType('address')" :message="getErrorMessage('address')">
                     <b-input v-model="partner.address"></b-input>
@@ -55,12 +63,17 @@ export default {
       isLoading: false,
       partner: {},
       partners: [],
-      errors: []
+      errors: [],
+      date: undefined
     };
   },
   methods: {
     create() {
       this.$emit("loading", true);
+
+      if(this.date) {
+        this.partner.birth_date = this.formatDate(this.date)
+      }
 
       axios.post("/api/partners", this.partner).then(response => {
         this.$buefy.toast.open({
@@ -94,6 +107,19 @@ export default {
         return this.errors[input][0];
       }
       return '';
+    },
+    formatDate(date) {
+      var d = new Date(date),
+          month = '' + (d.getMonth() + 1),
+          day = '' + d.getDate(),
+          year = d.getFullYear();
+
+      if (month.length < 2) 
+          month = '0' + month;
+      if (day.length < 2) 
+          day = '0' + day;
+
+      return [year, month, day].join('-');
     }
   },
 };

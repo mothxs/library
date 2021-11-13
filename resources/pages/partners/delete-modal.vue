@@ -49,8 +49,16 @@ export default {
   },
   methods: {
     destroy() {
-      this.$emit("loading", true);
+      if(this.partner.rents && this.partner.rents.length > 0) {
+        this.$buefy.toast.open({
+          message: 'El socio tiene alquileres',
+          type: 'is-danger'
+        });
+        return false;
+      }
 
+      this.$emit("loading", true);
+      
       axios.delete("/api/partners/"+this.partner.id).then(response => {
         this.$buefy.toast.open({
             message: '¡Socio archivado con éxito!',

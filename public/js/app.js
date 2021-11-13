@@ -2266,6 +2266,14 @@ __webpack_require__.r(__webpack_exports__);
     destroy: function destroy() {
       var _this = this;
 
+      if (this.author.books && this.author.books.length > 0) {
+        this.$buefy.toast.open({
+          message: 'El autor tiene libros',
+          type: 'is-danger'
+        });
+        return false;
+      }
+
       this.$emit("loading", true);
       axios["delete"]("/api/authors/" + this.author.id).then(function (response) {
         _this.$buefy.toast.open({
@@ -2562,7 +2570,12 @@ __webpack_require__.r(__webpack_exports__);
       this.showEditModal = true;
     },
     editItem: function editItem(editedItem) {
-      this.selectedItem = editedItem;
+      var _this2 = this;
+
+      var index = this.data.findIndex(function (item) {
+        return item.id == _this2.selectedItem.id;
+      });
+      this.$set(this.data, index, editedItem);
       this.showEditModal = false;
     },
     showDelete: function showDelete(item) {
@@ -2570,10 +2583,10 @@ __webpack_require__.r(__webpack_exports__);
       this.showDeleteModal = true;
     },
     remove: function remove() {
-      var _this2 = this;
+      var _this3 = this;
 
       var index = this.data.findIndex(function (item) {
-        return item.id == _this2.selectedItem.id;
+        return item.id == _this3.selectedItem.id;
       });
       this.data.splice(index, index >= 0 ? 1 : 0);
       this.showDeleteModal = false;
@@ -2682,33 +2695,73 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  props: {
+    authors: {
+      type: Array,
+      required: true
+    },
+    editorials: {
+      type: Array,
+      required: true
+    }
+  },
   data: function data() {
     return {
       isLoading: false,
       book: {},
-      authors: [],
       file: {},
       errors: [],
-      date: undefined
+      date: undefined,
+      authorName: '',
+      selectedAuthor: {},
+      editorialName: '',
+      selectedEditorial: {}
     };
   },
-  created: function created() {
-    this.load();
-  },
-  methods: {
-    load: function load() {
+  computed: {
+    filteredAuthors: function filteredAuthors() {
       var _this = this;
 
-      this.$emit("loading", true);
-      axios.get("/api/authors").then(function (response) {
-        _this.authors = response.data;
-      })["catch"](function (error) {})["finally"](function () {
-        _this.$emit("loading", false);
+      return this.authors.filter(function (option) {
+        return option.name.toString().toLowerCase().indexOf(_this.authorName.toLowerCase()) >= 0;
       });
     },
-    create: function create() {
+    filteredEditorials: function filteredEditorials() {
       var _this2 = this;
+
+      return this.editorials.filter(function (option) {
+        return option.name.toString().toLowerCase().indexOf(_this2.editorialName.toLowerCase()) >= 0;
+      });
+    }
+  },
+  methods: {
+    create: function create() {
+      var _this3 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
         var formData, response;
@@ -2716,16 +2769,16 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                _this2.$emit("loading", true);
+                _this3.$emit("loading", true);
 
                 formData = new FormData();
 
-                if (!_this2.file.name) {
+                if (!_this3.file.name) {
                   _context.next = 8;
                   break;
                 }
 
-                formData.append('file', _this2.file, _this2.file.name);
+                formData.append('file', _this3.file, _this3.file.name);
                 _context.next = 6;
                 return axios.post("/api/images", formData);
 
@@ -2733,40 +2786,48 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 response = _context.sent;
 
                 if (response.status == 200) {
-                  _this2.book.photo = response.data.name;
+                  _this3.book.photo = response.data.name;
                 } else {
-                  _this2.$buefy.toast.open({
+                  _this3.$buefy.toast.open({
                     message: 'Error al subir la imagen',
                     type: 'is-danger'
                   });
                 }
 
               case 8:
-                if (_this2.date) {
-                  _this2.book.release_date = _this2.formatDate(_this2.date);
+                if (_this3.date) {
+                  _this3.book.release_date = _this3.formatDate(_this3.date);
                 }
 
-                axios.post("/api/books", _this2.book).then(function (response) {
-                  _this2.$buefy.toast.open({
+                if (_this3.selectedAuthor) {
+                  _this3.book.author_id = _this3.selectedAuthor.id;
+                }
+
+                if (_this3.selectedEditorial) {
+                  _this3.book.editorial_id = _this3.selectedEditorial.id;
+                }
+
+                axios.post("/api/books", _this3.book).then(function (response) {
+                  _this3.$buefy.toast.open({
                     message: '¡Libro creado con éxito!',
                     type: 'is-success'
                   });
 
-                  _this2.$emit('created', response.data);
+                  _this3.$emit('created', response.data);
                 })["catch"](function (error) {
-                  _this2.$buefy.toast.open({
+                  _this3.$buefy.toast.open({
                     message: 'Error al crear un nuevo libro',
                     type: 'is-danger'
                   });
 
                   if (error.response.status == 422) {
-                    _this2.errors = error.response.data.errors;
+                    _this3.errors = error.response.data.errors;
                   }
                 })["finally"](function () {
-                  _this2.$emit("loading", false);
+                  _this3.$emit("loading", false);
                 });
 
-              case 10:
+              case 12:
               case "end":
                 return _context.stop();
             }
@@ -2986,10 +3047,42 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
     item: {
       type: Object,
+      required: true
+    },
+    authors: {
+      type: Array,
+      required: true
+    },
+    editorials: {
+      type: Array,
       required: true
     }
   },
@@ -2997,11 +3090,30 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     return {
       isLoading: false,
       book: {},
-      authors: [],
       file: {},
       errors: [],
-      date: undefined
+      date: undefined,
+      authorName: '',
+      selectedAuthor: {},
+      editorialName: '',
+      selectedEditorial: {}
     };
+  },
+  computed: {
+    filteredAuthors: function filteredAuthors() {
+      var _this = this;
+
+      return this.authors.filter(function (option) {
+        return option.name.toString().toLowerCase().indexOf(_this.authorName.toLowerCase()) >= 0;
+      });
+    },
+    filteredEditorials: function filteredEditorials() {
+      var _this2 = this;
+
+      return this.editorials.filter(function (option) {
+        return option.name.toString().toLowerCase().indexOf(_this2.editorialName.toLowerCase()) >= 0;
+      });
+    }
   },
   created: function created() {
     this.book = this.item;
@@ -3010,21 +3122,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.date = new Date(this.book.release_date);
     }
 
-    this.load();
+    this.selectedAuthor = this.book.author;
+    this.authorName = this.book.author.name;
+    this.selectedEditorial = this.book.editorial;
+    this.editorialName = this.book.editorial.name;
   },
   methods: {
-    load: function load() {
-      var _this = this;
-
-      this.$emit("loading", true);
-      axios.get("/api/authors").then(function (response) {
-        _this.authors = response.data;
-      })["catch"](function (error) {})["finally"](function () {
-        _this.$emit("loading", false);
-      });
-    },
     update: function update() {
-      var _this2 = this;
+      var _this3 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
         var formData, response;
@@ -3032,16 +3137,16 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                _this2.$emit("loading", true);
+                _this3.$emit("loading", true);
 
                 formData = new FormData();
 
-                if (!_this2.file.name) {
+                if (!_this3.file.name) {
                   _context.next = 8;
                   break;
                 }
 
-                formData.append('file', _this2.file, _this2.file.name);
+                formData.append('file', _this3.file, _this3.file.name);
                 _context.next = 6;
                 return axios.post("/api/images", formData);
 
@@ -3049,40 +3154,48 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 response = _context.sent;
 
                 if (response.status == 200) {
-                  _this2.book.photo = response.data.name;
+                  _this3.book.photo = response.data.name;
                 } else {
-                  _this2.$buefy.toast.open({
+                  _this3.$buefy.toast.open({
                     message: 'Error al subir la imagen',
                     type: 'is-danger'
                   });
                 }
 
               case 8:
-                if (_this2.date) {
-                  _this2.book.release_date = _this2.formatDate(_this2.date);
+                if (_this3.date) {
+                  _this3.book.release_date = _this3.formatDate(_this3.date);
                 }
 
-                axios.put("/api/books/" + _this2.book.id, _this2.book).then(function (response) {
-                  _this2.$buefy.toast.open({
+                if (_this3.selectedAuthor) {
+                  _this3.book.author_id = _this3.selectedAuthor.id;
+                }
+
+                if (_this3.selectedEditorial) {
+                  _this3.book.editorial_id = _this3.selectedEditorial.id;
+                }
+
+                axios.put("/api/books/" + _this3.book.id, _this3.book).then(function (response) {
+                  _this3.$buefy.toast.open({
                     message: '¡Libro actualizado con éxito!',
                     type: 'is-success'
                   });
 
-                  _this2.$emit('updated', response.data);
+                  _this3.$emit('updated', response.data);
                 })["catch"](function (error) {
-                  _this2.$buefy.toast.open({
+                  _this3.$buefy.toast.open({
                     message: 'Error al actualizar el libro',
                     type: 'is-danger'
                   });
 
                   if (error.response.status == 422) {
-                    _this2.errors = error.response.data.errors;
+                    _this3.errors = error.response.data.errors;
                   }
                 })["finally"](function () {
-                  _this2.$emit("loading", false);
+                  _this3.$emit("loading", false);
                 });
 
-              case 10:
+              case 12:
               case "end":
                 return _context.stop();
             }
@@ -3225,11 +3338,21 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
       isLoading: false,
       data: [],
+      authors: [],
+      editorials: [],
       showNewModal: false,
       showEditModal: false,
       showDeleteModal: false,
@@ -3254,6 +3377,22 @@ __webpack_require__.r(__webpack_exports__);
       })["finally"](function () {
         _this.isLoading = false;
       });
+      axios.get("/api/authors").then(function (response) {
+        _this.authors = response.data;
+      })["catch"](function (error) {
+        _this.$buefy.toast.open({
+          message: 'Error al cargar los autores',
+          type: 'is-danger'
+        });
+      })["finally"](function () {});
+      axios.get("/api/editorials").then(function (response) {
+        _this.editorials = response.data;
+      })["catch"](function (error) {
+        _this.$buefy.toast.open({
+          message: 'Error al cargar las ditoriales',
+          type: 'is-danger'
+        });
+      })["finally"](function () {});
     },
     addNewItem: function addNewItem(newItem) {
       this.data.push(newItem);
@@ -3263,8 +3402,13 @@ __webpack_require__.r(__webpack_exports__);
       this.selectedItem = item;
       this.showEditModal = true;
     },
-    editItem: function editItem(editemItem) {
-      this.selectedItem = editemItem;
+    editItem: function editItem(editedItem) {
+      var _this2 = this;
+
+      var index = this.data.findIndex(function (item) {
+        return item.id == _this2.selectedItem.id;
+      });
+      this.$set(this.data, index, editedItem);
       this.showEditModal = false;
     },
     showDelete: function showDelete(item) {
@@ -3272,10 +3416,10 @@ __webpack_require__.r(__webpack_exports__);
       this.showDeleteModal = true;
     },
     remove: function remove() {
-      var _this2 = this;
+      var _this3 = this;
 
       var index = this.data.findIndex(function (item) {
-        return item.id == _this2.selectedItem.id;
+        return item.id == _this3.selectedItem.id;
       });
       this.data.splice(index, index >= 0 ? 1 : 0);
       this.showDeleteModal = false;
@@ -3482,6 +3626,14 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     destroy: function destroy() {
       var _this = this;
+
+      if (this.editorial.books && this.editorial.books.length > 0) {
+        this.$buefy.toast.open({
+          message: 'La editorial tiene libros',
+          type: 'is-danger'
+        });
+        return false;
+      }
 
       this.$emit("loading", true);
       axios["delete"]("/api/editorials/" + this.editorial.id).then(function (response) {
@@ -3733,6 +3885,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -3771,8 +3927,13 @@ __webpack_require__.r(__webpack_exports__);
       this.selectedItem = item;
       this.showEditModal = true;
     },
-    editItem: function editItem(editemItem) {
-      this.selectedItem = editemItem;
+    editItem: function editItem(editedItem) {
+      var _this2 = this;
+
+      var index = this.data.findIndex(function (item) {
+        return item.id == _this2.selectedItem.id;
+      });
+      this.$set(this.data, index, editedItem);
       this.showEditModal = false;
     },
     showDelete: function showDelete(item) {
@@ -3780,10 +3941,10 @@ __webpack_require__.r(__webpack_exports__);
       this.showDeleteModal = true;
     },
     remove: function remove() {
-      var _this2 = this;
+      var _this3 = this;
 
       var index = this.data.findIndex(function (item) {
-        return item.id == _this2.selectedItem.id;
+        return item.id == _this3.selectedItem.id;
       });
       this.data.splice(index, index >= 0 ? 1 : 0);
       this.showDeleteModal = false;
@@ -3854,13 +4015,22 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
       isLoading: false,
       partner: {},
       partners: [],
-      errors: []
+      errors: [],
+      date: undefined
     };
   },
   methods: {
@@ -3868,6 +4038,11 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       this.$emit("loading", true);
+
+      if (this.date) {
+        this.partner.birth_date = this.formatDate(this.date);
+      }
+
       axios.post("/api/partners", this.partner).then(function (response) {
         _this.$buefy.toast.open({
           message: 'Socio creado con éxito!',
@@ -3901,6 +4076,15 @@ __webpack_require__.r(__webpack_exports__);
       }
 
       return '';
+    },
+    formatDate: function formatDate(date) {
+      var d = new Date(date),
+          month = '' + (d.getMonth() + 1),
+          day = '' + d.getDate(),
+          year = d.getFullYear();
+      if (month.length < 2) month = '0' + month;
+      if (day.length < 2) day = '0' + day;
+      return [year, month, day].join('-');
     }
   }
 });
@@ -3969,6 +4153,14 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     destroy: function destroy() {
       var _this = this;
+
+      if (this.partner.rents && this.partner.rents.length > 0) {
+        this.$buefy.toast.open({
+          message: 'El socio tiene alquileres',
+          type: 'is-danger'
+        });
+        return false;
+      }
 
       this.$emit("loading", true);
       axios["delete"]("/api/partners/" + this.partner.id).then(function (response) {
@@ -4052,6 +4244,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
     item: {
@@ -4071,8 +4271,8 @@ __webpack_require__.r(__webpack_exports__);
   created: function created() {
     this.partner = this.item;
 
-    if (this.partner.foundation_date) {
-      this.date = new Date(this.partner.foundation_date);
+    if (this.partner.birth_date) {
+      this.date = new Date(this.partner.birth_date);
     }
   },
   methods: {
@@ -4080,6 +4280,11 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       this.$emit("loading", true);
+
+      if (this.date) {
+        this.partner.birth_date = this.formatDate(this.date);
+      }
+
       axios.put("/api/partners/" + this.partner.id, this.partner).then(function (response) {
         _this.$buefy.toast.open({
           message: '¡Socio actualizado con éxito!',
@@ -4113,6 +4318,15 @@ __webpack_require__.r(__webpack_exports__);
       }
 
       return '';
+    },
+    formatDate: function formatDate(date) {
+      var d = new Date(date),
+          month = '' + (d.getMonth() + 1),
+          day = '' + d.getDate(),
+          year = d.getFullYear();
+      if (month.length < 2) month = '0' + month;
+      if (day.length < 2) day = '0' + day;
+      return [year, month, day].join('-');
     }
   }
 });
@@ -4130,6 +4344,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+//
+//
+//
+//
 //
 //
 //
@@ -4243,8 +4461,13 @@ __webpack_require__.r(__webpack_exports__);
       this.selectedItem = item;
       this.showEditModal = true;
     },
-    editItem: function editItem(editemItem) {
-      this.selectedItem = editemItem;
+    editItem: function editItem(editedItem) {
+      var _this2 = this;
+
+      var index = this.data.findIndex(function (item) {
+        return item.id == _this2.selectedItem.id;
+      });
+      this.$set(this.data, index, editedItem);
       this.showEditModal = false;
     },
     showDelete: function showDelete(item) {
@@ -4252,10 +4475,10 @@ __webpack_require__.r(__webpack_exports__);
       this.showDeleteModal = true;
     },
     remove: function remove() {
-      var _this2 = this;
+      var _this3 = this;
 
       var index = this.data.findIndex(function (item) {
-        return item.id == _this2.selectedItem.id;
+        return item.id == _this3.selectedItem.id;
       });
       this.data.splice(index, index >= 0 ? 1 : 0);
       this.showDeleteModal = false;
@@ -4409,6 +4632,14 @@ __webpack_require__.r(__webpack_exports__);
     create: function create() {
       var _this3 = this;
 
+      if (this.selectedBook.qty < this.rent.qty) {
+        this.$buefy.toast.open({
+          message: 'La cantidad del alquiler supera al stock del libro',
+          type: 'is-danger'
+        });
+        return false;
+      }
+
       this.$emit("loading", true);
 
       if (this.startDate) {
@@ -4539,14 +4770,13 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       this.$emit("loading", true);
-      var rent = {};
-      Object.assign(rent, this.rent);
-      rent.times_extended += 1;
-      var date = new Date(rent.end_date); //Add 7 days to the end_date
+      var date = new Date(this.rent.end_date); //Add 7 days to the end_date
 
       date.setDate(date.getDate() + 7);
-      rent.end_date = this.formatDate(date);
-      axios.put("/api/rents/" + rent.id, rent).then(function (response) {
+      axios.put("/api/rents/" + this.rent.id, {
+        end_date: this.formatDate(date),
+        times_extended: this.rent.times_extended + 1
+      }).then(function (response) {
         _this.$buefy.toast.open({
           message: '¡Alquiler extendido con éxito!',
           type: 'is-success'
@@ -4729,8 +4959,13 @@ __webpack_require__.r(__webpack_exports__);
       this.selectedItem = item;
       this.showExtendModal = true;
     },
-    editItem: function editItem(editemItem) {
-      this.selectedItem = editemItem;
+    editItem: function editItem(editedItem) {
+      var _this2 = this;
+
+      var index = this.data.findIndex(function (item) {
+        return item.id == _this2.selectedItem.id;
+      });
+      this.$set(this.data, index, editedItem);
       this.showExtendModal = false;
     },
     showReturn: function showReturn(item) {
@@ -4738,10 +4973,10 @@ __webpack_require__.r(__webpack_exports__);
       this.showReturnModal = true;
     },
     remove: function remove() {
-      var _this2 = this;
+      var _this3 = this;
 
       var index = this.data.findIndex(function (item) {
-        return item.id == _this2.selectedItem.id;
+        return item.id == _this3.selectedItem.id;
       });
       this.data.splice(index, index >= 0 ? 1 : 0);
       this.showReturnModal = false;
@@ -44172,7 +44407,7 @@ var render = function () {
             _c("form", { attrs: { action: "" } }, [
               _c(
                 "div",
-                { staticClass: "modal-card", staticStyle: { width: "auto" } },
+                { staticClass: "modal-card", staticStyle: { width: "1600" } },
                 [
                   _c("header", { staticClass: "modal-card-head" }, [
                     _c("p", { staticClass: "modal-card-title" }, [
@@ -44224,26 +44459,116 @@ var render = function () {
                             "b-field",
                             {
                               attrs: {
-                                label: "Fecha de publicación",
-                                type: _vm.getInputType("release_date"),
-                                message: _vm.getErrorMessage("release_date"),
+                                label: "Autor",
+                                type: _vm.getInputType("author_id"),
+                                message: _vm.getErrorMessage("author_id"),
                               },
                             },
                             [
-                              _c("b-datepicker", {
+                              _c("b-autocomplete", {
                                 attrs: {
-                                  "show-week-number": true,
-                                  locale: "es-ES",
-                                  placeholder: "Click para seleccionar...",
-                                  icon: "calendar-today",
-                                  "trap-focus": "",
+                                  data: _vm.filteredAuthors,
+                                  placeholder: "Nombre del autor",
+                                  icon: "magnify",
+                                  clearable: "",
+                                  field: "name",
                                 },
-                                model: {
-                                  value: _vm.date,
-                                  callback: function ($$v) {
-                                    _vm.date = $$v
+                                on: {
+                                  select: function (option) {
+                                    return (_vm.selectedAuthor = option)
                                   },
-                                  expression: "date",
+                                },
+                                scopedSlots: _vm._u([
+                                  {
+                                    key: "empty",
+                                    fn: function () {
+                                      return [
+                                        _vm._v(
+                                          "No se han encontrado resultados"
+                                        ),
+                                      ]
+                                    },
+                                    proxy: true,
+                                  },
+                                ]),
+                                model: {
+                                  value: _vm.authorName,
+                                  callback: function ($$v) {
+                                    _vm.authorName = $$v
+                                  },
+                                  expression: "authorName",
+                                },
+                              }),
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "b-field",
+                            {
+                              attrs: {
+                                label: "Editorial",
+                                type: _vm.getInputType("editorial_id"),
+                                message: _vm.getErrorMessage("editorial_id"),
+                              },
+                            },
+                            [
+                              _c("b-autocomplete", {
+                                attrs: {
+                                  data: _vm.filteredEditorials,
+                                  placeholder: "Nombre de la editorial",
+                                  icon: "magnify",
+                                  clearable: "",
+                                  field: "name",
+                                },
+                                on: {
+                                  select: function (option) {
+                                    return (_vm.selectedEditorial = option)
+                                  },
+                                },
+                                scopedSlots: _vm._u([
+                                  {
+                                    key: "empty",
+                                    fn: function () {
+                                      return [
+                                        _vm._v(
+                                          "No se han encontrado resultados"
+                                        ),
+                                      ]
+                                    },
+                                    proxy: true,
+                                  },
+                                ]),
+                                model: {
+                                  value: _vm.editorialName,
+                                  callback: function ($$v) {
+                                    _vm.editorialName = $$v
+                                  },
+                                  expression: "editorialName",
+                                },
+                              }),
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "b-field",
+                            {
+                              attrs: {
+                                label: "Stock",
+                                type: _vm.getInputType("qty"),
+                                message: _vm.getErrorMessage("qty"),
+                              },
+                            },
+                            [
+                              _c("b-input", {
+                                attrs: { type: "number", min: "0" },
+                                model: {
+                                  value: _vm.book.qty,
+                                  callback: function ($$v) {
+                                    _vm.$set(_vm.book, "qty", $$v)
+                                  },
+                                  expression: "book.qty",
                                 },
                               }),
                             ],
@@ -44261,6 +44586,7 @@ var render = function () {
                             },
                             [
                               _c("b-input", {
+                                attrs: { maxlength: "13" },
                                 model: {
                                   value: _vm.book.isbn,
                                   callback: function ($$v) {
@@ -44296,7 +44622,14 @@ var render = function () {
                             ],
                             1
                           ),
-                          _vm._v(" "),
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        { staticClass: "column" },
+                        [
                           _c(
                             "b-field",
                             {
@@ -44319,14 +44652,7 @@ var render = function () {
                             ],
                             1
                           ),
-                        ],
-                        1
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "div",
-                        { staticClass: "column" },
-                        [
+                          _vm._v(" "),
                           _c(
                             "b-field",
                             {
@@ -44378,20 +44704,26 @@ var render = function () {
                             "b-field",
                             {
                               attrs: {
-                                label: "Stock",
-                                type: _vm.getInputType("qty"),
-                                message: _vm.getErrorMessage("qty"),
+                                label: "Fecha de publicación",
+                                type: _vm.getInputType("release_date"),
+                                message: _vm.getErrorMessage("release_date"),
                               },
                             },
                             [
-                              _c("b-input", {
-                                attrs: { type: "number", min: "0" },
+                              _c("b-datepicker", {
+                                attrs: {
+                                  "show-week-number": true,
+                                  locale: "es-ES",
+                                  placeholder: "Click para seleccionar...",
+                                  icon: "calendar-today",
+                                  "trap-focus": "",
+                                },
                                 model: {
-                                  value: _vm.book.qty,
+                                  value: _vm.date,
                                   callback: function ($$v) {
-                                    _vm.$set(_vm.book, "qty", $$v)
+                                    _vm.date = $$v
                                   },
-                                  expression: "book.qty",
+                                  expression: "date",
                                 },
                               }),
                             ],
@@ -44692,26 +45024,116 @@ var render = function () {
                             "b-field",
                             {
                               attrs: {
-                                label: "Fecha de publicación",
-                                type: _vm.getInputType("release_date"),
-                                message: _vm.getErrorMessage("release_date"),
+                                label: "Autor",
+                                type: _vm.getInputType("author_id"),
+                                message: _vm.getErrorMessage("author_id"),
                               },
                             },
                             [
-                              _c("b-datepicker", {
+                              _c("b-autocomplete", {
                                 attrs: {
-                                  "show-week-number": true,
-                                  locale: "es-ES",
-                                  placeholder: "Click para seleccionar...",
-                                  icon: "calendar-today",
-                                  "trap-focus": "",
+                                  data: _vm.filteredAuthors,
+                                  placeholder: "Nombre del autor",
+                                  icon: "magnify",
+                                  clearable: "",
+                                  field: "name",
                                 },
-                                model: {
-                                  value: _vm.date,
-                                  callback: function ($$v) {
-                                    _vm.date = $$v
+                                on: {
+                                  select: function (option) {
+                                    return (_vm.selectedAuthor = option)
                                   },
-                                  expression: "date",
+                                },
+                                scopedSlots: _vm._u([
+                                  {
+                                    key: "empty",
+                                    fn: function () {
+                                      return [
+                                        _vm._v(
+                                          "No se han encontrado resultados"
+                                        ),
+                                      ]
+                                    },
+                                    proxy: true,
+                                  },
+                                ]),
+                                model: {
+                                  value: _vm.authorName,
+                                  callback: function ($$v) {
+                                    _vm.authorName = $$v
+                                  },
+                                  expression: "authorName",
+                                },
+                              }),
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "b-field",
+                            {
+                              attrs: {
+                                label: "Editorial",
+                                type: _vm.getInputType("editorial_id"),
+                                message: _vm.getErrorMessage("editorial_id"),
+                              },
+                            },
+                            [
+                              _c("b-autocomplete", {
+                                attrs: {
+                                  data: _vm.filteredEditorials,
+                                  placeholder: "Nombre de la editorial",
+                                  icon: "magnify",
+                                  clearable: "",
+                                  field: "name",
+                                },
+                                on: {
+                                  select: function (option) {
+                                    return (_vm.selectedEditorial = option)
+                                  },
+                                },
+                                scopedSlots: _vm._u([
+                                  {
+                                    key: "empty",
+                                    fn: function () {
+                                      return [
+                                        _vm._v(
+                                          "No se han encontrado resultados"
+                                        ),
+                                      ]
+                                    },
+                                    proxy: true,
+                                  },
+                                ]),
+                                model: {
+                                  value: _vm.editorialName,
+                                  callback: function ($$v) {
+                                    _vm.editorialName = $$v
+                                  },
+                                  expression: "editorialName",
+                                },
+                              }),
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "b-field",
+                            {
+                              attrs: {
+                                label: "Stock",
+                                type: _vm.getInputType("qty"),
+                                message: _vm.getErrorMessage("qty"),
+                              },
+                            },
+                            [
+                              _c("b-input", {
+                                attrs: { type: "number", min: "0" },
+                                model: {
+                                  value: _vm.book.qty,
+                                  callback: function ($$v) {
+                                    _vm.$set(_vm.book, "qty", $$v)
+                                  },
+                                  expression: "book.qty",
                                 },
                               }),
                             ],
@@ -44764,7 +45186,14 @@ var render = function () {
                             ],
                             1
                           ),
-                          _vm._v(" "),
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        { staticClass: "column" },
+                        [
                           _c(
                             "b-field",
                             {
@@ -44787,14 +45216,7 @@ var render = function () {
                             ],
                             1
                           ),
-                        ],
-                        1
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "div",
-                        { staticClass: "column" },
-                        [
+                          _vm._v(" "),
                           _c(
                             "b-field",
                             {
@@ -44846,20 +45268,26 @@ var render = function () {
                             "b-field",
                             {
                               attrs: {
-                                label: "Stock",
-                                type: _vm.getInputType("qty"),
-                                message: _vm.getErrorMessage("qty"),
+                                label: "Fecha de publicación",
+                                type: _vm.getInputType("release_date"),
+                                message: _vm.getErrorMessage("release_date"),
                               },
                             },
                             [
-                              _c("b-input", {
-                                attrs: { type: "number", min: "0" },
+                              _c("b-datepicker", {
+                                attrs: {
+                                  "show-week-number": true,
+                                  locale: "es-ES",
+                                  placeholder: "Click para seleccionar...",
+                                  icon: "calendar-today",
+                                  "trap-focus": "",
+                                },
                                 model: {
-                                  value: _vm.book.qty,
+                                  value: _vm.date,
                                   callback: function ($$v) {
-                                    _vm.$set(_vm.book, "qty", $$v)
+                                    _vm.date = $$v
                                   },
-                                  expression: "book.qty",
+                                  expression: "date",
                                 },
                               }),
                             ],
@@ -45067,6 +45495,18 @@ var render = function () {
                           _c("div", { staticClass: "content" }, [
                             _c("p", [
                               _vm._v(
+                                "\n                        Autor: " +
+                                  _vm._s(props.row.author.name) +
+                                  "\n                        "
+                              ),
+                              _c("br"),
+                              _vm._v(
+                                "\n                        Editorial: " +
+                                  _vm._s(props.row.editorial.name) +
+                                  "\n                        "
+                              ),
+                              _c("br"),
+                              _vm._v(
                                 "\n                        Tipo de tapa: " +
                                   _vm._s(props.row.cover_type) +
                                   "\n                        "
@@ -45231,6 +45671,7 @@ var render = function () {
       _vm._v(" "),
       _vm.showNewModal
         ? _c("create-book-modal", {
+            attrs: { authors: _vm.authors, editorials: _vm.editorials },
             on: {
               close: function ($event) {
                 _vm.showNewModal = !_vm.showNewModal
@@ -45247,7 +45688,11 @@ var render = function () {
       _vm._v(" "),
       _vm.showEditModal
         ? _c("edit-book-modal", {
-            attrs: { item: _vm.selectedItem },
+            attrs: {
+              item: _vm.selectedItem,
+              authors: _vm.authors,
+              editorials: _vm.editorials,
+            },
             on: {
               close: function ($event) {
                 _vm.showEditModal = !_vm.showEditModal
@@ -45951,8 +46396,37 @@ var render = function () {
                     fn: function (props) {
                       return [
                         props.row.website
-                          ? _c("a", [_vm._v(_vm._s(props.row.website))])
+                          ? _c(
+                              "a",
+                              {
+                                attrs: {
+                                  href: props.row.website,
+                                  target: "_blank",
+                                },
+                              },
+                              [_vm._v(_vm._s(props.row.website))]
+                            )
                           : _vm._e(),
+                      ]
+                    },
+                  },
+                ]),
+              }),
+              _vm._v(" "),
+              _c("b-table-column", {
+                attrs: { label: "Nº de libros", sortable: "" },
+                scopedSlots: _vm._u([
+                  {
+                    key: "default",
+                    fn: function (props) {
+                      return [
+                        _vm._v(
+                          "\n        " +
+                            _vm._s(
+                              props.row.books ? props.row.books.length : 0
+                            ) +
+                            "\n      "
+                        ),
                       ]
                     },
                   },
@@ -46173,6 +46647,7 @@ var render = function () {
                             },
                             [
                               _c("b-input", {
+                                attrs: { maxlength: "9" },
                                 model: {
                                   value: _vm.partner.id_card,
                                   callback: function ($$v) {
@@ -46189,20 +46664,26 @@ var render = function () {
                             "b-field",
                             {
                               attrs: {
-                                label: "Edad",
-                                type: _vm.getInputType("website"),
-                                message: _vm.getErrorMessage("website"),
+                                label: "Fecha de nacimiento",
+                                type: _vm.getInputType("birth_date"),
+                                message: _vm.getErrorMessage("birth_date"),
                               },
                             },
                             [
-                              _c("b-input", {
-                                attrs: { type: "number", min: "0" },
+                              _c("b-datepicker", {
+                                attrs: {
+                                  "show-week-number": true,
+                                  locale: "es-ES",
+                                  placeholder: "Click para seleccionar...",
+                                  icon: "calendar-today",
+                                  "trap-focus": "",
+                                },
                                 model: {
-                                  value: _vm.partner.website,
+                                  value: _vm.date,
                                   callback: function ($$v) {
-                                    _vm.$set(_vm.partner, "website", $$v)
+                                    _vm.date = $$v
                                   },
-                                  expression: "partner.website",
+                                  expression: "date",
                                 },
                               }),
                             ],
@@ -46491,6 +46972,7 @@ var render = function () {
                             },
                             [
                               _c("b-input", {
+                                attrs: { maxlength: "9" },
                                 model: {
                                   value: _vm.partner.id_card,
                                   callback: function ($$v) {
@@ -46507,20 +46989,26 @@ var render = function () {
                             "b-field",
                             {
                               attrs: {
-                                label: "Edad",
-                                type: _vm.getInputType("website"),
-                                message: _vm.getErrorMessage("website"),
+                                label: "Fecha de nacimiento",
+                                type: _vm.getInputType("birth_date"),
+                                message: _vm.getErrorMessage("birth_date"),
                               },
                             },
                             [
-                              _c("b-input", {
-                                attrs: { type: "number", min: "0" },
+                              _c("b-datepicker", {
+                                attrs: {
+                                  "show-week-number": true,
+                                  locale: "es-ES",
+                                  placeholder: "Click para seleccionar...",
+                                  icon: "calendar-today",
+                                  "trap-focus": "",
+                                },
                                 model: {
-                                  value: _vm.partner.website,
+                                  value: _vm.date,
                                   callback: function ($$v) {
-                                    _vm.$set(_vm.partner, "website", $$v)
+                                    _vm.date = $$v
                                   },
-                                  expression: "partner.website",
+                                  expression: "date",
                                 },
                               }),
                             ],
@@ -46735,8 +47223,8 @@ var render = function () {
               _vm._v(" "),
               _c("b-table-column", {
                 attrs: {
-                  field: "age",
-                  label: "Edad",
+                  field: "birth_date",
+                  label: "Año de nacimiento",
                   sortable: "",
                   searchable: "",
                 },
@@ -46746,7 +47234,9 @@ var render = function () {
                     fn: function (props) {
                       return [
                         _vm._v(
-                          "\n        " + _vm._s(props.row.age) + "\n      "
+                          "\n        " +
+                            _vm._s(props.row.birth_date) +
+                            "\n      "
                         ),
                       ]
                     },
@@ -46768,6 +47258,24 @@ var render = function () {
                       return [
                         _vm._v(
                           "\n        " + _vm._s(props.row.address) + "\n      "
+                        ),
+                      ]
+                    },
+                  },
+                ]),
+              }),
+              _vm._v(" "),
+              _c("b-table-column", {
+                attrs: { field: "rents", label: "Nº alquileres", sortable: "" },
+                scopedSlots: _vm._u([
+                  {
+                    key: "default",
+                    fn: function (props) {
+                      return [
+                        _vm._v(
+                          "\n        " +
+                            _vm._s(props.row.rents.length) +
+                            "\n      "
                         ),
                       ]
                     },
@@ -47359,7 +47867,7 @@ var render = function () {
             [
               _c("b-table-column", {
                 attrs: {
-                  field: "partner_name",
+                  field: "partner.name",
                   label: "Socio",
                   sortable: "",
                   searchable: "",
@@ -47382,7 +47890,7 @@ var render = function () {
               _vm._v(" "),
               _c("b-table-column", {
                 attrs: {
-                  field: "book_name",
+                  field: "book.title",
                   label: "Libro",
                   sortable: "",
                   searchable: "",
@@ -47536,7 +48044,7 @@ var render = function () {
                             _c("b-button", {
                               attrs: {
                                 "icon-left": "clock-outline",
-                                type: "is-warning",
+                                type: "is-dark",
                               },
                               on: {
                                 click: function ($event) {

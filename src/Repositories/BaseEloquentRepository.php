@@ -15,13 +15,20 @@ abstract class BaseEloquentRepository implements BaseRepositoryInterface
     protected $model;
 
     /**
+     * The model relationships to eager load
+     * 
+     * @var array
+     */
+    protected $with = array();
+
+    /**
      * Returns all the items
      * 
      * @return object;
      */
     public function all(): array
     {
-        $items = $this->model::all();
+        $items = $this->model::with($this->with)->get();
 
         return $items->all();
     }
@@ -34,7 +41,7 @@ abstract class BaseEloquentRepository implements BaseRepositoryInterface
      */
     public function find(int $id): object|null
     {
-        return $this->model::find($id);
+        return $this->model::with($this->with)->find($id);
     }
 
     /**
@@ -51,7 +58,7 @@ abstract class BaseEloquentRepository implements BaseRepositoryInterface
             return false;
         }
         
-        return $item->fresh();
+        return $item->fresh()->load($this->with);
     }
 
     /**
@@ -72,7 +79,7 @@ abstract class BaseEloquentRepository implements BaseRepositoryInterface
         $item->fill($data);
         $item->save();
 
-        return $item->fresh();
+        return $item->fresh()->load($this->with);
     }
 
     /**

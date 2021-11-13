@@ -11,7 +11,7 @@ class BookApiController extends BaseApiController
     protected $createValidationRules = [
         'title'            => 'required|string',
         'isbn'             => 'required|string',
-        'pages'            => 'required|integer',
+        'pages'            => 'required|integer|min:1',
         'author_id'        => 'required|integer|exists:authors,id',
         'editorial_id'     => 'required|integer|exists:editorials,id',
         'category'         => 'nullable|string',
@@ -26,7 +26,7 @@ class BookApiController extends BaseApiController
     protected $updateValidationRules = [
         'title'            => 'required|string',
         'isbn'             => 'required|string',
-        'pages'            => 'required|integer',
+        'pages'            => 'required|integer|min:1',
         'author_id'        => 'required|integer|exists:authors,id',
         'editorial_id'     => 'required|integer|exists:editorials,id',
         'category'         => 'nullable|string',

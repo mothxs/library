@@ -23,6 +23,50 @@
                   <b-field label="Título" :type="getInputType('title')" :message="getErrorMessage('title')">
                     <b-input v-model="book.title" required></b-input>
                   </b-field>
+                  <b-field label="Autor" :type="getInputType('author_id')" :message="getErrorMessage('author_id')">
+                    <b-autocomplete
+                        v-model="authorName"
+                        :data="filteredAuthors"
+                        placeholder="Nombre del autor"
+                        icon="magnify"
+                        clearable
+                        field="name"
+                        @select="option => selectedAuthor = option">
+                        <template #empty>No se han encontrado resultados</template>
+                    </b-autocomplete>
+                  </b-field>
+                  <b-field label="Editorial" :type="getInputType('editorial_id')" :message="getErrorMessage('editorial_id')">
+                    <b-autocomplete
+                        v-model="editorialName"
+                        :data="filteredEditorials"
+                        placeholder="Nombre de la editorial"
+                        icon="magnify"
+                        clearable
+                        field="name"
+                        @select="option => selectedEditorial = option">
+                        <template #empty>No se han encontrado resultados</template>
+                    </b-autocomplete>
+                  </b-field>
+                  <b-field label="Stock" :type="getInputType('qty')" :message="getErrorMessage('qty')">
+                    <b-input v-model="book.qty" type="number" min="0"></b-input>
+                  </b-field>
+                  <b-field label="ISBN" :type="getInputType('isbn')" :message="getErrorMessage('isbn')">
+                    <b-input v-model="book.isbn"></b-input>
+                  </b-field>
+                  <b-field label="Nº de páginas" :type="getInputType('pages')" :message="getErrorMessage('pages')">
+                    <b-input v-model="book.pages" type="number" min="1"></b-input>
+                  </b-field>
+                </div>
+                <div class="column">
+                  <b-field label="Tipo de tapa" :type="getInputType('cover_type')" :message="getErrorMessage('cover_type')">
+                    <b-input v-model="book.cover_type"></b-input>
+                  </b-field>
+                  <b-field label="Copyright" :type="getInputType('copyright')" :message="getErrorMessage('copyright')">
+                    <b-input v-model="book.copyright"></b-input>
+                  </b-field>
+                  <b-field label="Lugar de publicación" :type="getInputType('publishing_place')" :message="getErrorMessage('publishing_place')">
+                    <b-input v-model="book.publishing_place"></b-input>
+                  </b-field>
                   <b-field label="Fecha de publicación" :type="getInputType('release_date')" :message="getErrorMessage('release_date')">
                     <b-datepicker
                       v-model="date"
@@ -33,26 +77,6 @@
                       trap-focus
                     >
                     </b-datepicker>
-                  </b-field>
-                  <b-field label="ISBN" :type="getInputType('isbn')" :message="getErrorMessage('isbn')">
-                    <b-input v-model="book.isbn"></b-input>
-                  </b-field>
-                  <b-field label="Nº de páginas" :type="getInputType('pages')" :message="getErrorMessage('pages')">
-                    <b-input v-model="book.pages" type="number" min="1"></b-input>
-                  </b-field>
-                  <b-field label="Tipo de tapa" :type="getInputType('cover_type')" :message="getErrorMessage('cover_type')">
-                    <b-input v-model="book.cover_type"></b-input>
-                  </b-field>
-                </div>
-                <div class="column">
-                  <b-field label="Copyright" :type="getInputType('copyright')" :message="getErrorMessage('copyright')">
-                    <b-input v-model="book.copyright"></b-input>
-                  </b-field>
-                  <b-field label="Lugar de publicación" :type="getInputType('publishing_place')" :message="getErrorMessage('publishing_place')">
-                    <b-input v-model="book.publishing_place"></b-input>
-                  </b-field>
-                  <b-field label="Stock" :type="getInputType('qty')" :message="getErrorMessage('qty')">
-                    <b-input v-model="book.qty" type="number" min="0"></b-input>
                   </b-field>
                   <b-field label="Subir foto" :type="getInputType('photo')" :message="getErrorMessage('photo')">
                     <b-field class="file is-primary" :class="{'has-name': !!file}">
@@ -84,37 +108,52 @@ export default {
     item: {
       type: Object,
       required: true
+    },
+    authors: {
+      type: Array,
+      required: true
+    },
+    editorials: {
+      type: Array,
+      required: true
     }
   },
   data: function () {
     return {
       isLoading: false,
       book: {},
-      authors: [],
       file: {},
       errors: [],
-      date: undefined
+      date: undefined,
+      authorName: '',
+      selectedAuthor: {},
+      editorialName: '',
+      selectedEditorial: {}
     };
+  },
+  computed: {
+    filteredAuthors() {
+      return this.authors.filter((option) => {
+        return option.name.toString().toLowerCase().indexOf(this.authorName.toLowerCase()) >= 0
+      })
+    },
+    filteredEditorials() {
+      return this.editorials.filter((option) => {
+        return option.name.toString().toLowerCase().indexOf(this.editorialName.toLowerCase()) >= 0
+      })
+    }
   },
   created() {
     this.book = this.item;
     if(this.book.release_date) {
-      this.date = new Date(this.book.release_date)
+      this.date = new Date(this.book.release_date);
     }
-    this.load()
+    this.selectedAuthor = this.book.author;
+    this.authorName = this.book.author.name;
+    this.selectedEditorial = this.book.editorial;
+    this.editorialName = this.book.editorial.name;
   },
   methods: {
-    load() {
-      this.$emit("loading", true);
-      axios.get("/api/authors").then((response) => {
-        this.authors = response.data
-      })
-      .catch((error) => {
-      })
-      .finally(() => {
-        this.$emit("loading", false)
-      });
-    },
     async update() {
       this.$emit("loading", true);
 
@@ -136,6 +175,12 @@ export default {
 
       if(this.date) {
         this.book.release_date = this.formatDate(this.date)
+      }
+      if(this.selectedAuthor) {
+        this.book.author_id = this.selectedAuthor.id;
+      }
+      if(this.selectedEditorial) {
+        this.book.editorial_id = this.selectedEditorial.id;
       }
 
       axios.put("/api/books/"+this.book.id, this.book).then(response => {

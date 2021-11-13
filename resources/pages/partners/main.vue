@@ -30,12 +30,16 @@
           {{ props.row.id_card }}
         </b-table-column>
 
-        <b-table-column field="age" label="Edad" v-slot="props" sortable searchable>
-          {{ props.row.age }}
+        <b-table-column field="birth_date" label="Año de nacimiento" v-slot="props" sortable searchable>
+          {{ props.row.birth_date }}
         </b-table-column>
 
         <b-table-column field="address" label="Dirección" v-slot="props" sortable searchable>
           {{ props.row.address }}
+        </b-table-column>
+
+        <b-table-column field="rents" label="Nº alquileres" v-slot="props" sortable>
+          {{ props.row.rents.length }}
         </b-table-column>
 
         <b-table-column v-slot="props">
@@ -114,8 +118,9 @@ export default {
       this.selectedItem = item;
       this.showEditModal = true;
     },
-    editItem(editemItem) {
-      this.selectedItem = editemItem;
+    editItem(editedItem) {
+      const index = this.data.findIndex(item => item.id == this.selectedItem.id);
+      this.$set(this.data, index, editedItem);
       this.showEditModal = false
     },
     showDelete(item) {

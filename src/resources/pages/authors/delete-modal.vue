@@ -49,6 +49,15 @@ export default {
   },
   methods: {
     destroy() {
+
+      if(this.author.books && this.author.books.length > 0) {
+        this.$buefy.toast.open({
+          message: 'El autor tiene libros',
+          type: 'is-danger'
+        });
+        return false;
+      }
+
       this.$emit("loading", true);
 
       axios.delete("/api/authors/"+this.author.id).then(response => {

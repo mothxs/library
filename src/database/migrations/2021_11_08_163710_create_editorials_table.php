@@ -15,7 +15,7 @@ class CreateEditorialsTable extends Migration
     {
         Schema::create('editorials', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->unique();
+            $table->string('name');
             $table->string('country');
             $table->date('foundation_date')->nullable();
             $table->string('website')->nullable();

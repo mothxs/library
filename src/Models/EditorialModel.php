@@ -17,6 +17,6 @@ class EditorialModel extends BaseModel
      */
     public function books()
     {
-        return $this->belongsToMany(Books::class, 'editorial_book', 'editorial_id', 'book_id');
+        return $this->hasMany(BookModel::class, 'editorial_id');
     }
 }

@@ -11,4 +11,11 @@ class UserEloquentRepository extends BaseEloquentRepository implements UserRepos
     {
         $this->model = $model;
     }
+
+    public function findByEmail(string $email): object|null
+    {
+        $user = $this->model::withTrashed()->where('email',$email)->first();
+
+        return $user;
+    }
 }

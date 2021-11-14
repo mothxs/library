@@ -2,7 +2,7 @@
 
 Small project developed in [Laravel](https://laravel.com/) + [Vue](https://vuejs.org/) with some [Bulma](https://bulma.io/) and [Buefy](https://buefy.org/) for components. Most of the application code is inside <code>/src</code> folder.
 
-## Installation
+## **Installation**
 
 #### IMPORTANT
 
@@ -29,7 +29,7 @@ Or start it as a daemon:
 
     vendor/bin/sail up -d
 
-## **After docker is configured, open a new tab if it is not started as daemon and execute the following:**
+## **After docker is configured, open a new terminal if it is not started as daemon and execute the following:**
 
 ### *Automatic configuration with:*
 

@@ -29,7 +29,15 @@ Or start it as a daemon:
 
     vendor/bin/sail up -d
 
-### After docker is configured, open a new tab if it is not started as daemon and execute the following:
+## **After docker is configured, open a new tab if it is not started as daemon and execute the following:**
+
+### *Automatic configuration with:*
+
+    sh configure.sh
+
+If you have done automatic configuration go to [Login in](#login-in) section to check the user created so you can test the app.
+
+### *For manual configuration do the following:*
 
 Generate an encryption key for the app:
 
@@ -64,6 +72,8 @@ Create a new user:
     vendor/bin/sail artisan library:createuser joe joe@doe.com secret
 
 Now, you should be able to go to <code>http://localhost/</code> and see the app.
+
+## Login in
 
 For the login, use the user configured above. The default email is **joe@doe.com** and the password is **secret**.
 

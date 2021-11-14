@@ -28,15 +28,7 @@ class BookModel extends BaseModel
     {
         return $this->belongsTo(EditorialModel::class, 'editorial_id');
     }
-
-    /**
-     * Get the categories.
-     */
-    public function categories()
-    {
-        return $this->belongsToMany(CategoryModel::class, 'category_book', 'book_id', 'category_id');
-    }
-
+    
     /**
      * Get the rents.
      */

@@ -2919,18 +2919,27 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       isLoading: false,
-      author: {}
+      book: {}
     };
   },
   created: function created() {
-    this.author = this.item;
+    this.book = this.item;
   },
   methods: {
     destroy: function destroy() {
       var _this = this;
 
       this.$emit("loading", true);
-      axios["delete"]("/api/books/" + this.author.id).then(function (response) {
+
+      if (this.book.rents && this.book.rents.length > 0) {
+        this.$buefy.toast.open({
+          message: 'El libro tiene alquileres',
+          type: 'is-danger'
+        });
+        return false;
+      }
+
+      axios["delete"]("/api/books/" + this.book.id).then(function (response) {
         _this.$buefy.toast.open({
           message: '¡Libro archivado con éxito!',
           type: 'is-success'

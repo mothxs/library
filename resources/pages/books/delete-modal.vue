@@ -41,17 +41,25 @@ export default {
   data: function () {
     return {
       isLoading: false,
-      author: {}
+      book: {}
     };
   },
   created() {
-    this.author = this.item;
+    this.book = this.item;
   },
   methods: {
     destroy() {
       this.$emit("loading", true);
 
-      axios.delete("/api/books/"+this.author.id).then(response => {
+      if(this.book.rents && this.book.rents.length > 0) {
+        this.$buefy.toast.open({
+            message: 'El libro tiene alquileres',
+            type: 'is-danger'
+        })
+        return false;
+      }
+
+      axios.delete("/api/books/"+this.book.id).then(response => {
         this.$buefy.toast.open({
             message: '¡Libro archivado con éxito!',
             type: 'is-success'

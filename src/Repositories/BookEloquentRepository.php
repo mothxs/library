@@ -7,7 +7,7 @@ use Library\Contracts\BookRepositoryInterface;
 
 class BookEloquentRepository extends BaseEloquentRepository implements BookRepositoryInterface
 {
-    protected $with = ['author', 'editorial'];
+    protected $with = ['author', 'editorial', 'rents'];
 
     public function __construct(BookModel $model)
     {

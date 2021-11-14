@@ -41,7 +41,7 @@
             </span>
             @if(Auth::user())
                 <span class="library-user-name">{{ucfirst(Auth::user()->name)}}</span>
-            <@endif
+            @endif
             <a class="library-logout" href="/logout">
                 <span class="library-icon material-icons">
                     logout

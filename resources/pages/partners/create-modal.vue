@@ -78,7 +78,7 @@ export default {
 
       axios.post("/api/partners", this.partner).then(response => {
         this.$buefy.toast.open({
-            message: 'Socio creado con éxito!',
+            message: '¡Socio creado con éxito!',
             type: 'is-success'
         })
         this.$emit('created', response.data);

@@ -76,7 +76,7 @@ export default {
 
       axios.post("/api/editorials", this.editorial).then(response => {
         this.$buefy.toast.open({
-            message: 'Editorial creada con éxito!',
+            message: '¡Editorial creada con éxito!',
             type: 'is-success'
         })
         this.$emit('created', response.data);

@@ -62,7 +62,7 @@ export default {
 
       axios.delete("/api/authors/"+this.author.id).then(response => {
         this.$buefy.toast.open({
-            message: 'Autor archivado con éxito!',
+            message: '¡Autor archivado con éxito!',
             type: 'is-success'
         })
         this.$emit('deleted');

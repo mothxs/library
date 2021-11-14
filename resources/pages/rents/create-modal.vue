@@ -154,7 +154,7 @@ export default {
 
       axios.post("/api/rents", this.rent).then(response => {
         this.$buefy.toast.open({
-            message: 'Alquiler creado con éxito!',
+            message: '¡Alquiler creado con éxito!',
             type: 'is-success'
         })
         this.$emit('created', response.data);

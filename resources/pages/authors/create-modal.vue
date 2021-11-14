@@ -79,7 +79,7 @@ export default {
 
       axios.post("/api/authors", this.author).then(response => {
         this.$buefy.toast.open({
-            message: 'Autor creado con éxito!',
+            message: '¡Autor creado con éxito!',
             type: 'is-success'
         })
         this.$emit('created', response.data);

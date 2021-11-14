@@ -77,7 +77,7 @@ Now, you should be able to go to <code>http://localhost/</code> and see the app.
 
 For the login, use the user configured above. The default email is **joe@doe.com** and the password is **secret**.
 
-<hr>
+## Stoping sail
 
 To stop sail daemon:
 

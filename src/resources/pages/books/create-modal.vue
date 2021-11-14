@@ -146,7 +146,6 @@ export default {
 
       const formData = new FormData();
       
-      debugger
       if(this.file.name) {
         formData.append('file', this.file, this.file.name);
         let response = await axios.post("/api/images", formData);

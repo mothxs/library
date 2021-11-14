@@ -10,7 +10,7 @@ class BookModel extends BaseModel
 
     protected $fillable = [ 
         'title', 'isbn', 'pages', 'cover_type', 'category', 'author_id', 'editorial_id',
-        'copyright', 'publishing_place', 'release_date', 'qty', 'photo'
+        'copyright', 'publishing_place', 'release_date', 'qty', 'image'
     ];
 
     /**

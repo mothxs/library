@@ -20,7 +20,7 @@ class BookApiController extends BaseApiController
         'publishing_place' => 'nullable|string',
         'release_date'     => 'nullable|date_format:Y-m-d',
         'qty'              => 'required|integer|min:0',
-        'photo'            => 'nullable|string'
+        'image'            => 'nullable|string'
     ];
 
     protected $updateValidationRules = [
@@ -35,7 +35,7 @@ class BookApiController extends BaseApiController
         'publishing_place' => 'nullable|string',
         'release_date'     => 'nullable|date_format:Y-m-d',
         'qty'              => 'required|integer|min:0',
-        'photo'            => 'nullable|string'
+        'image'            => 'nullable|string'
     ];
 
     public function __construct(

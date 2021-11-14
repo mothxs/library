@@ -46,7 +46,7 @@
             <article class="media">
                 <figure class="media-left">
                     <p class="image is-128x128">
-                        <img v-if="props.row.photo" :src="'/'+props.row.photo">
+                        <img v-if="props.row.image" :src="'/'+props.row.image">
                         <img v-else :src="'https://buefy.org/static/img/placeholder-128x128.png'" alt="Book image">
                     </p>
                 </figure>

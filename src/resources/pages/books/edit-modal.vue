@@ -79,7 +79,7 @@
                     >
                     </b-datepicker>
                   </b-field>
-                  <b-field label="Subir foto" :type="getInputType('photo')" :message="getErrorMessage('photo')">
+                  <b-field label="Subir foto" :type="getInputType('image')" :message="getErrorMessage('image')">
                     <b-field class="file is-primary" :class="{'has-name': !!file}">
                       <b-upload v-model="file" class="file-label is-success" rounded>
                         <span class="file-cta">
@@ -165,7 +165,7 @@ export default {
         let response = await axios.post("/api/images", formData);
 
         if(response.status == 200) {
-          this.book.photo = response.data.name;
+          this.book.image = response.data.name;
         } else {
           this.$buefy.toast.open({
             message: 'Error al subir la imagen',

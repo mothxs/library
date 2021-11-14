@@ -35,6 +35,22 @@ Generate an encryption key for the app:
 
     vendor/bin/sail artisan key:generate
 
+Publish assets to public directory:
+
+    vendor/bin/sail artisan vendor:publish --tag=public
+
+Publish assets to resource directory:
+
+    vendor/bin/sail artisan vendor:publish --tag=resource
+
+Install npm dependencies:
+
+    vendor/bin/sail npm isntall
+
+Compile assets:
+
+    vendor/bin/sail npm run dev
+
 Execute migrations:
 
     vendor/bin/sail artisan migrate
@@ -56,3 +72,9 @@ For the login, use the user configured above. The default email is **joe@doe.com
 To stop sail daemon:
 
     vendor/bin/sail stop
+
+## Tests
+
+There are some basic HTTP tests for API endpoints. If you want to run them:
+
+    vendor/bin/sail artisan test

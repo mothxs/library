@@ -10,7 +10,6 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
       rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@5.8.55/css/materialdesignicons.min.css">
-    <link rel="stylesheet" href="https://unpkg.com/buefy/dist/buefy.min.css">
     
     <link rel="stylesheet" href="/css/app.css">
 </head>

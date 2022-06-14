@@ -15,7 +15,7 @@ class BookPersister extends BasePersister
     /**
      * Validates wheter data can be deleted
      * 
-     * @param aray $data
+     * @param array $data
      * @return bool
      */
     protected function canBeDeleted(int $id): bool

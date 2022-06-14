@@ -16,7 +16,7 @@ abstract class BasePersister
     /**
      * Validates wheter data can be created
      * 
-     * @param aray $data
+     * @param array $data
      * @return bool
      */
     protected function canBeCreated(array $data): bool
@@ -27,7 +27,7 @@ abstract class BasePersister
     /**
      * Validates wheter data can be updated
      * 
-     * @param aray $data
+     * @param array $data
      * @return bool
      */
     protected function canBeUpdated(array $data): bool
@@ -38,7 +38,7 @@ abstract class BasePersister
     /**
      * Validates wheter data can be deleted
      * 
-     * @param aray $data
+     * @param array $data
      * @return bool
      */
     protected function canBeDeleted(int $id): bool
@@ -49,7 +49,7 @@ abstract class BasePersister
     /**
      * Validates wheter data can be archived
      * 
-     * @param aray $data
+     * @param array $data
      * @return bool
      */
     protected function canBeArchived(int $id): bool

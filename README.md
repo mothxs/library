@@ -58,7 +58,7 @@ Publish assets to resource directory:
 
 Install npm dependencies:
 
-    vendor/bin/sail npm isntall
+    vendor/bin/sail npm install
 
 Compile assets:
 
